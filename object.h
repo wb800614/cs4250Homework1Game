@@ -23,9 +23,6 @@ class Object
   // Move the object to (x, y) in screen coordinates
   void move(GLfloat nx, GLfloat ny);
 
-  // Move the object to where in screen coordinates
-  void move(vec2 where);
-
   // Change the object's color to r, g, b value
   void color(GLfloat nr, GLfloat ng, GLfloat nb);
 
@@ -45,31 +42,35 @@ class Object
   vec3 getSelectColor();
 
   // Change the size of the object.
-  void change_size(GLfloat size);
+  void change_size(GLfloat size = -1);
 
   // Get the current object's position
   vec2 get_pos();
 
+  void set_window_size(vec2 window);
+
   // Update the last updated time to now.
   void set_last_time();
 
-  // Reset the simulation time for this object to 0.
-  void reset_time();
+  //Update the last update function call time
+  void set_last_update_call_time();
+
+  //Function to set timeout
+  void set_random_timeout();
 
   // Returns the time since the last update
   GLint compute_time();
 
-  // Sets flag that this object is selected
-  void Selected();
+  GLint compute_last_update_call_time();
 
-  // Clears flag that this object is selected
-  void notSelected();
-
-  // Returns the selected state of this object
-  bool GetSelected();
 
 protected:
+  //Size of current window
+  vec2 window_size;
+
   GLfloat size; // size of object (see individual objects for specific meaning)
+
+  GLfloat timeout; //time that object waits before initial move (milliseconds)
 
   // location of object (x, y)
   GLfloat x;      
@@ -100,10 +101,16 @@ protected:
   
   // For smooth animation consistent across machines
   GLint last_time;
-  GLint current_time;
+  GLint last_update_call_time;
 
   // Whether the current object is selected
   bool selected;
+
+  //Whether current object is in viewing range
+  bool isVisible;
+
+  //Max timeout possible
+  GLint MAX_TIMEOUT = 10000; //10 seconds
 };
 
 // Comparator for unsigned vs. float colors

@@ -28,26 +28,24 @@ Object::Object()
   x=y=0.0;
 
   // When did we last update object
-  last_time=current_time=glutGet(GLUT_ELAPSED_TIME);
+  last_time=last_update_call_time=glutGet(GLUT_ELAPSED_TIME);
 
   // Make sure it is initialize to NULL
   points=NULL;
+
+  //Set not visible
+  isVisible = false;
 }
 
 // Move the object to (x, y) in screen coordinates
 void Object::move(GLfloat nx, GLfloat ny)
 {
-  x = nx;
+  if (nx == -1)
+    x = size * -1;
+  else 
+    x = nx;
   y = ny;
 }
-
-// Move the object to where in screen coordinates
-void Object::move(vec2 where)
-{
-  x = where.x;
-  y = where.y;
-}
-
 
 // Get the current object's position
 vec2 Object::get_pos()
@@ -58,7 +56,16 @@ vec2 Object::get_pos()
 // Change the size of the object.
 void Object::change_size(GLfloat nsize)
 {
-  size = nsize;
+  if (nsize == -1)
+    size = 30 - y/22.5;
+  else
+    size = nsize;
+}
+
+//Set current window size
+void Object::set_window_size(vec2 window)
+{
+  window_size = window;
 }
 
 // Update the last time object was modified to now.
@@ -68,17 +75,21 @@ void Object::set_last_time()
   last_time=glutGet(GLUT_ELAPSED_TIME);
 }
 
-// Update the last time object was modified to now.
-void Object::reset_time()
-{
-  // What is the time in the simulation.
-  current_time=0;
-}
-
 // Returns the amount of time since we last updated the object.
 GLint Object::compute_time()
 {
   return(glutGet(GLUT_ELAPSED_TIME)-last_time);
+}
+
+// Returns the amount of time since we last updated the object.
+GLint Object::compute_last_update_call_time()
+{
+  return(glutGet(GLUT_ELAPSED_TIME)-last_update_call_time);
+}
+
+void Object::set_last_update_call_time()
+{
+  last_update_call_time = glutGet(GLUT_ELAPSED_TIME);
 }
 
 // Change the object's color to r, g, b value
@@ -121,19 +132,10 @@ vec3 Object::getSelectColor()
   return(vec3(sr, sg, sb));
 }
 
-void Object::Selected()
+void Object::set_random_timeout()
 {
-  selected=true;
-}
-
-void Object::notSelected()
-{
-  selected=false;
-}
-
-bool Object::GetSelected()
-{
-  return(selected);
+  timeout = rand()%((int)MAX_TIMEOUT + 1);
+  std::cout << timeout << std::endl;
 }
 
 bool cmpcolor(unsigned char colora[], vec3 colorb)

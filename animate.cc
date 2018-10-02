@@ -18,7 +18,7 @@
 #include <iostream>
 #include <stdlib.h>
 #include "square.h"
-#include "circle.h"
+#include "scene.h"
 
 using std::cin;
 using std::cout;
@@ -32,9 +32,7 @@ bool updating=true;
 
 // Pointer to the square object (must be initialized after
 // initialization of shaders, so leave it as a pointer.
-Square *MySquare;
-Square *MySquare2;
-Circle *MyCircle;
+Scene * MyScene;
 
 // Data storage for our geometry for the lines
 vec2 *points;
@@ -63,10 +61,11 @@ extern "C" void display()
   if (clear) {
     glClear(GL_COLOR_BUFFER_BIT);
   }
-
-  MySquare->draw();
-  MySquare2->draw();
-  MyCircle->draw();
+  MyScene->DrawBackground();
+  for(int i = 0; i < MyScene->count_of_animals; i++)
+  {
+    MyScene->animals_1[i]->draw();
+  }
 
   glutSwapBuffers ();
 }
@@ -79,14 +78,12 @@ extern "C" void display()
 extern "C" void idle()
 {
   if (updating) {
-
-    MySquare2->update();
+    for(int i = 0; i < MyScene->count_of_animals; i++)
+    {
+      MyScene->animals_1[i] -> update();
+    }
 
     // Make MySquare and MyCircle follow MySquare2, but rotate around it
-    MySquare->change_goal(MySquare2->get_pos());
-    MySquare->update_ellipse();
-    MyCircle->change_goal(MySquare->get_pos());
-    MyCircle->update_ellipse();
 
     glutPostRedisplay();
   }
@@ -94,39 +91,7 @@ extern "C" void idle()
 
 void processSelection(unsigned char PixelColor[], int btn)
 {
-  // std::cout << PixelColor.x << " " << PixelColor.y << " " << PixelColor.z << std::endl;
 
-  // Decide what object is there (if any)
-  if (cmpcolor(PixelColor,MyCircle->getSelectColor())) {
-    //    std::cout << "You chose the Circle\n";
-    // If middle button click, then keep selecting, if left button,
-    // then unselect the other objects
-    if (btn==GLUT_LEFT_BUTTON) {
-      MySquare2->notSelected();
-      MySquare->notSelected();
-    }
-    MyCircle->Selected();
-  } else if (cmpcolor(PixelColor,MySquare->getSelectColor())) {
-    //    std::cout << "You chose the moving Square\n";
-    // If middle button click, then keep selecting, if left button,
-    // then unselect the other objects
-    if (btn==GLUT_LEFT_BUTTON) {
-      MySquare2->notSelected();
-      MyCircle->notSelected();
-    }
-    MySquare->Selected();
-  } else if (cmpcolor(PixelColor,MySquare2->getSelectColor())) {
-    //    std::cout << "You chose the central Square\n";
-    // If middle button click, then keep selecting, if left button,
-    // then unselect the other objects
-    if (btn==GLUT_LEFT_BUTTON) {
-      MySquare->notSelected();
-      MyCircle->notSelected();
-    }
-    MySquare2->Selected();
-  } else {
-    //      std::cout << "You missed all objects\n";
-  }
 }
 
 // Mouse callback, implements selection by using colors in the back buffer.
@@ -138,11 +103,6 @@ extern "C" void mouse(int btn, int state, int x, int y)
     glClearColor (0.0, 0.0, 0.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT);
 
-    // Setting first parameter to true means to use the selection
-    // colors, not the object colors
-    MySquare->draw(true);
-    MySquare2->draw(true);
-    MyCircle->draw(true);
     // Flush ensures all commands have drawn
     glFlush();
 
@@ -172,17 +132,14 @@ extern "C" void mouse(int btn, int state, int x, int y)
 // Allows you to still get location of mouse clicks when using menus
 extern "C" void menustatus(int status, int x, int y)
 {
-  // Pass the new location to the object.
-  MySquare2->change_goal(x, win_h-y);
+
   glutPostRedisplay();
 }  
 
 // Called whenever mouse moves, after being pressed
 extern "C" void motion(int x, int y)
 {
-  // Pass the new location to the object.
-  //  MySquare->move(x, win_h-y);
-  MySquare2->change_goal(x, win_h-y);
+
 
   glutPostRedisplay();
 }
@@ -250,56 +207,18 @@ extern "C" void key(unsigned char k, int xx, int yy)
     break;
   // make the size of the square larger
   case '+':
-    size+=2;
-    MySquare->change_size(size);
     break;
   // make the size of the square smaller
   case '-':
-    size-=2;
-    // Test for non-sensical size.
-    if (size < 0) {
-      size=0;
-    }
-    MySquare->change_size(size);
     break;
   case 'c':
     clear = !clear;
     break;
   case '>':
-    if (MyCircle->GetSelected()) {
-      MyCircle->get_ellipse_parameters(minor_axis, major_axis,
-				       angular_offset, angular_velocity);
-      angular_offset+=0.1;
-      MyCircle->set_ellipse_parameters(minor_axis, major_axis, angular_offset, angular_velocity);
-    }
-    if (MySquare->GetSelected()) {
-      MySquare->get_ellipse_parameters(minor_axis, major_axis,
-				       angular_offset, angular_velocity);
-      angular_offset+=0.1;
-      MySquare->set_ellipse_parameters(minor_axis, major_axis, angular_offset, angular_velocity);
-    }
     break;
   case '<':
-    if (MyCircle->GetSelected()) {
-      MyCircle->get_ellipse_parameters(minor_axis, major_axis,
-				       angular_offset, angular_velocity);
-      angular_offset-=0.1;
-      MyCircle->set_ellipse_parameters(minor_axis, major_axis, angular_offset, angular_velocity);
-    }
-    if (MySquare->GetSelected()) {
-      MySquare->get_ellipse_parameters(minor_axis, major_axis,
-				       angular_offset, angular_velocity);
-      angular_offset-=0.1;
-      MySquare->set_ellipse_parameters(minor_axis, major_axis, angular_offset, angular_velocity);
-    }
     break;
   case ' ':
-    updating = !updating;
-    if (updating) {
-      MySquare->set_last_time();
-      MySquare2->set_last_time();
-      MyCircle->set_last_time();
-    }
       
     break;
   default:
@@ -316,68 +235,12 @@ extern "C" void special(int k, int xx, int yy)
 {
   switch (k) {
   case GLUT_KEY_UP:
-    if (MyCircle->GetSelected()) {
-      MyCircle->get_ellipse_parameters(minor_axis, major_axis,
-				       angular_offset, angular_velocity);
-      angular_velocity*=1.5;
-      MyCircle->set_ellipse_parameters(minor_axis, major_axis,
-				       angular_offset, angular_velocity);
-    }
-    if (MySquare->GetSelected()) {
-      MySquare->get_ellipse_parameters(minor_axis, major_axis,
-				       angular_offset, angular_velocity);
-      angular_velocity*=1.5;
-      MySquare->set_ellipse_parameters(minor_axis, major_axis,
-				       angular_offset, angular_velocity);
-    }
     break;
   case GLUT_KEY_DOWN:
-    if (MyCircle->GetSelected()) {
-      MyCircle->get_ellipse_parameters(minor_axis, major_axis,
-				       angular_offset, angular_velocity);
-      angular_velocity/=1.5;
-      MyCircle->set_ellipse_parameters(minor_axis, major_axis,
-				       angular_offset, angular_velocity);
-    }
-    if (MySquare->GetSelected()) {
-      MySquare->get_ellipse_parameters(minor_axis, major_axis,
-				       angular_offset, angular_velocity);
-      angular_velocity/=1.5;
-      MySquare->set_ellipse_parameters(minor_axis, major_axis,
-				       angular_offset, angular_velocity);
-    }
     break;
   case GLUT_KEY_LEFT:
-    if (MyCircle->GetSelected()) {
-      MyCircle->get_ellipse_parameters(minor_axis, major_axis,
-				       angular_offset, angular_velocity);
-      minor_axis*=1.5;
-      MyCircle->set_ellipse_parameters(minor_axis, major_axis,
-				       angular_offset, angular_velocity);
-    }
-    if (MySquare->GetSelected()) {
-      MySquare->get_ellipse_parameters(minor_axis, major_axis,
-				       angular_offset, angular_velocity);
-      minor_axis*=1.5;
-      MySquare->set_ellipse_parameters(minor_axis, major_axis,
-				       angular_offset, angular_velocity);
-    }
     break;
   case GLUT_KEY_RIGHT:
-    if (MyCircle->GetSelected()) {
-      MyCircle->get_ellipse_parameters(minor_axis, major_axis,
-				       angular_offset, angular_velocity);
-      minor_axis/=1.5;
-      MyCircle->set_ellipse_parameters(minor_axis, major_axis,
-				       angular_offset, angular_velocity);
-    }
-    if (MySquare->GetSelected()) {
-      MySquare->get_ellipse_parameters(minor_axis, major_axis,
-				       angular_offset, angular_velocity);
-      minor_axis/=1.5;
-      MySquare->set_ellipse_parameters(minor_axis, major_axis,
-				       angular_offset, angular_velocity);
-    }
     break;
   default:
     // do nothing
@@ -391,6 +254,8 @@ void myinit()
 {
   glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGB);
   glutInitWindowSize(900,900);
+  win_h = 900;
+  win_w = 900;
   glutInitWindowPosition(20,20);
 
   glutCreateWindow("Animation test");
@@ -471,35 +336,19 @@ void init()
   glUniform2f(offsetLoc, 0.0, 0.0);               // Initial offset
 						  // for mouse loc.
 
-  // We need just one square and circle to draw any number of them.
-  points = new vec2[Square::NumPoints+Circle::NumPoints];
-  //  glBufferData(GL_ARRAY_BUFFER, sizeof(points), points, GL_STATIC_DRAW);
+  //Init scene object
+  MyScene = new Scene(vec2(win_w, win_h));
 
-  // Build the square object
-  MySquare = new Square(0, points, offsetLoc, sizeLoc, colorLoc);
-  MySquare->change_size(size);
-  MySquare->move(450, 450);
-  MySquare->selectColor(1.0/255.0, 0.0, 0.0);
+  // Initialize points for animals
+  points = new vec2[Scene::Num_Points];
 
-  // Build another square object, note it shares the same points as
-  // the first one.
-  MySquare2 = new Square(0, points, offsetLoc, sizeLoc, colorLoc);
-  MySquare2->change_size(size);
-  MySquare2->move(450, 450);
-  MySquare2->change_goal(450, 450);
-  MySquare2->selectColor(2.0/255.0, 0.0, 0.0);
-
-  // The index to add the circle's points to the points array is at
-  // the end of the points from the square (Square::NumPoints).
-  MyCircle = new Circle(Square::NumPoints, points, offsetLoc, sizeLoc, colorLoc);
-  MyCircle->change_size(10);
-  MyCircle->move(450, 450);
-  MyCircle->selectColor(3.0/255.0, 0.0, 0.0);
-  MyCircle->set_ellipse_parameters(minor_axis, major_axis, angular_offset, angular_velocity);
+  //Build scene object
+  MyScene->InitBackground(0, points, offsetLoc, sizeLoc, colorLoc);
+  MyScene->InitAnimals(0, points, offsetLoc, sizeLoc, colorLoc);
 
   // Send the data to the graphics card, after it has been generated
   // by creating the objects in the world (above).
-  glBufferData(GL_ARRAY_BUFFER, (Square::NumPoints+Circle::NumPoints)*sizeof(vec2), points, GL_STATIC_DRAW);
+  glBufferData(GL_ARRAY_BUFFER, (Scene::Num_Points)*sizeof(vec2), points, GL_STATIC_DRAW);
 }
 
 //  Main Program
