@@ -1,5 +1,5 @@
-#ifndef ANIMAL1_H
-#define ANIMAL1_H
+#ifndef DART_H
+#define DART_H
 //Class definition of square object 
 // 
 // Written by Prof. David M. Chelberg
@@ -14,17 +14,17 @@
 #include <stdlib.h>
 #include "object.h"
 
-class Animal1 :public Object
+class Dart :public Object
 {
 public:
-  // How many points are needed to specify the square
+  // How many points are needed to specify the gun
   static GLint NumPoints;
 
   // Default constructor
-  Animal1();
+  Dart();
 
   // Constructor if start of square vertices aren't at 0.
-  Animal1(GLuint nindex, vec2 *npoints, GLint noffsetLoc, GLint nsizeLoc, GLint ncolorLoc);
+  Dart(GLuint nindex, vec2 *npoints, GLint noffsetLoc, GLint nsizeLoc, GLint ncolorLoc);
 
   // Initialize the points in the points array for square.
   void init_points();
@@ -38,7 +38,7 @@ public:
   
 private:
   static bool inited;
-
+  bool isShot;
 };
 
 #endif

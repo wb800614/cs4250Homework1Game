@@ -58,6 +58,9 @@ class Object
   //Function to set timeout
   void set_random_timeout();
 
+  //Set ground size
+  void set_ground(vec2 g);
+
   // Returns the time since the last update
   GLint compute_time();
 
@@ -67,6 +70,7 @@ class Object
 protected:
   //Size of current window
   vec2 window_size;
+  vec2 ground;
 
   GLfloat size; // size of object (see individual objects for specific meaning)
 
@@ -103,14 +107,14 @@ protected:
   GLint last_time;
   GLint last_update_call_time;
 
-  // Whether the current object is selected
-  bool selected;
-
   //Whether current object is in viewing range
   bool isVisible;
 
+
+  //Constants
   //Max timeout possible
   GLint MAX_TIMEOUT = 10000; //10 seconds
+  GLfloat DEATH_TIME = 2000; //2 seconds
 };
 
 // Comparator for unsigned vs. float colors

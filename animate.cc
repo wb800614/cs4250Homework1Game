@@ -62,10 +62,13 @@ extern "C" void display()
     glClear(GL_COLOR_BUFFER_BIT);
   }
   MyScene->DrawBackground();
+
   for(int i = 0; i < MyScene->count_of_animals; i++)
   {
     MyScene->animals_1[i]->draw();
   }
+  
+  MyScene->gun->draw();
 
   glutSwapBuffers ();
 }
@@ -106,22 +109,7 @@ extern "C" void mouse(int btn, int state, int x, int y)
     // Flush ensures all commands have drawn
     glFlush();
 
-    // Read the value at the location of the cursor
-    // In the back buffer (not the one visible on-screen)
-    glReadBuffer(GL_BACK);
-    unsigned char PixelColor[3];
-    glReadPixels(x, win_h-y, 1, 1, GL_RGB, GL_UNSIGNED_BYTE, &PixelColor);
-    std::cout << int(PixelColor[0]) << " "
-	      << int(PixelColor[1]) << " "
-	      << int(PixelColor[2]) << std::endl;
-    processSelection(PixelColor, btn);
-
-    /*
-    glutSwapBuffers();
-    cout << "Type any character to continue: ";
-    char a;
-    cin >> a;
-    */
+    MyScene->FireGun(x,y);
 
     glClearColor (0.0, 0.0, 0.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT);
@@ -139,8 +127,7 @@ extern "C" void menustatus(int status, int x, int y)
 // Called whenever mouse moves, after being pressed
 extern "C" void motion(int x, int y)
 {
-
-
+  MyScene->gun->move(x,win_h-y);
   glutPostRedisplay();
 }
 
@@ -274,7 +261,7 @@ void myinit()
   glutMouseFunc (mouse);
   glutKeyboardFunc(key);
   glutSpecialFunc(special);
-  glutMotionFunc (motion);
+  glutPassiveMotionFunc (motion);
 
   // NOTE: This is not in book. The following sets up a callback
   // whenever a menu is in use.  It gives mouse click location as well
@@ -343,8 +330,7 @@ void init()
   points = new vec2[Scene::Num_Points];
 
   //Build scene object
-  MyScene->InitBackground(0, points, offsetLoc, sizeLoc, colorLoc);
-  MyScene->InitAnimals(0, points, offsetLoc, sizeLoc, colorLoc);
+  MyScene->Init(0, points, offsetLoc, sizeLoc, colorLoc);
 
   // Send the data to the graphics card, after it has been generated
   // by creating the objects in the world (above).

@@ -1,39 +1,40 @@
 //Class implementation of square object 
 // 
-// Written by Prof. David M. Chelberg
+// Written by Wesley Book
 // 
-// Assumes that the square object was defined in the VAO at location
-// index
 
 // last-modified: Fri Oct  6 07:42:10 2017
 
-#include "square.h"
+#include "dart.h"
 
-GLint Animal1::NumPoints=4;
-bool Animal1::inited=false;
+GLint Dart::NumPoints=18;
+bool Dart::inited=false;
 
-void Animal1::init_points()
+void Dart::init_points()
 {
-  if (!inited) {
-    points[0+index]= vec2( 1,  1);
-    points[1+index]= vec2(-1,  1);
-    points[3+index]= vec2(-1, -1);
-    points[2+index]= vec2( 1, -1);
+  if (!inited && points!=NULL) {
+    points[index]= vec2( 0,  0);
+    GLfloat delta=(2.0*M_PI)/float(NumPoints-2);
+    GLfloat angle=0.0;
+    for (size_t ind = 1; ind < NumPoints; ++ind) {
+      points[index+ind]=vec2(cos(angle), sin(angle));
+      angle+=delta;
+    }
     inited=true;
     // Actually send the data we've created to the GPU.
-    // Can't do this here as we aren't sure we have an open OpenGL window yet.
     //    glBufferSubData(GL_ARRAY_BUFFER, index*sizeof(vec2), NumPoints*sizeof(vec2), points);
   }
 }
 
 // Default constructor
-Animal1::Animal1() : Object()
+Dart::Dart() : Object()
 {
+  isShot = false;
   init_points();
 }
 
 // Constructor if start of square vertices aren't at 0.
-Animal1::Animal1(GLuint nindex, vec2 *npoints, GLint noffsetLoc, GLint nsizeLoc, GLint ncolorLoc): Object()
+Dart::Dart(GLuint nindex, vec2 *npoints, GLint noffsetLoc, GLint nsizeLoc, GLint ncolorLoc): Object()
 {
   // Default index is the start (0).
   index = nindex;
@@ -50,18 +51,18 @@ Animal1::Animal1(GLuint nindex, vec2 *npoints, GLint noffsetLoc, GLint nsizeLoc,
 }
 
 // Code to call to draw a square.
-void Animal1::draw(bool select_mode)
+void Dart::draw(bool select_mode)
 {
-  // Pass the current size of the square
+  // Pass the current size of the circle
   glUniform1f(sizeLoc, size);
   glUniform2i(offsetLoc, int(x), int(y));
-  glUniform4f(colorLoc, r, g, b, 1.0);
-  //  std::cout << "Drawing square at (" << x << " " << y << ") color = (" << r << ", " << g << ", " << b << ")" << std::endl;
-  glDrawArrays(GL_TRIANGLE_STRIP, index, NumPoints);
+  glUniform4f(colorLoc, 0.0, 0.0, 0.8, 1.0);
+
+  glDrawArrays(GL_TRIANGLE_FAN, index, NumPoints);
 }
 
 // Update the position of the square from time
-void Animal1::update()
+void Dart::update()
 {
   if (isVisible || (glutGet(GLUT_ELAPSED_TIME) - last_time) > timeout)
   {
@@ -87,4 +88,3 @@ void Animal1::update()
   }
   set_last_update_call_time();
 }
- 

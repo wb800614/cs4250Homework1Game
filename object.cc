@@ -9,9 +9,6 @@
 
 Object::Object()
 {
-  // Initially this object is not selected.
-  selected=false;
-
   // Default index is the start (0).
   index = 0;
 
@@ -136,6 +133,12 @@ void Object::set_random_timeout()
 {
   timeout = rand()%((int)MAX_TIMEOUT + 1);
   std::cout << timeout << std::endl;
+}
+
+//Set ground size
+void Object::set_ground(vec2 g)
+{
+  ground = g;
 }
 
 bool cmpcolor(unsigned char colora[], vec3 colorb)

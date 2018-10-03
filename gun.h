@@ -1,5 +1,5 @@
-#ifndef ANIMAL1_H
-#define ANIMAL1_H
+#ifndef GUN_H
+#define GUN_H
 //Class definition of square object 
 // 
 // Written by Prof. David M. Chelberg
@@ -14,17 +14,17 @@
 #include <stdlib.h>
 #include "object.h"
 
-class Animal1 :public Object
+class Gun :public Object
 {
 public:
-  // How many points are needed to specify the square
+  // How many points are needed to specify the gun
   static GLint NumPoints;
 
   // Default constructor
-  Animal1();
+  Gun();
 
   // Constructor if start of square vertices aren't at 0.
-  Animal1(GLuint nindex, vec2 *npoints, GLint noffsetLoc, GLint nsizeLoc, GLint ncolorLoc);
+  Gun(GLuint nindex, vec2 *npoints, GLint noffsetLoc, GLint nsizeLoc, GLint ncolorLoc);
 
   // Initialize the points in the points array for square.
   void init_points();
@@ -38,6 +38,7 @@ public:
   
 private:
   static bool inited;
+  GLint crosshair_size = 900;
 
 };
 
