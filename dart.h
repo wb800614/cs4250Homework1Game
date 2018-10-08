@@ -13,6 +13,7 @@
 #include <iostream>
 #include <stdlib.h>
 #include "object.h"
+#include "square.h"
 
 class Dart :public Object
 {
@@ -29,6 +30,12 @@ public:
   // Initialize the points in the points array for square.
   void init_points();
 
+  //Set isShot to true
+  void Fire_Dart();
+
+  //Set tracker on an object
+  void Set_Tracker(Animal * target);
+
   // Code to call to draw a square.
   // If select is true, then use the selection color.
   void draw(bool select=false);
@@ -39,6 +46,9 @@ public:
 private:
   static bool inited;
   bool isShot;
+
+  bool TrackerOn;
+  Animal * target;
 };
 
 #endif

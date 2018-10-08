@@ -109,6 +109,12 @@ vec3 Object::getColor()
   return(vec3(r, g, b));
 }
 
+// Get the object's size
+GLfloat Object::get_size()
+{
+  return size;
+}
+
 // Change the object's color to r, g, b value
 void Object::selectColor(GLfloat nr, GLfloat ng, GLfloat nb)
 {

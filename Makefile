@@ -37,4 +37,4 @@ dart.o: dart.h dart.cc
 
 # clean up after yourself
 clean: 
-	rm -f animate square.o circle.o object.o scene.o
+	rm -f animate square.o circle.o object.o scene.o gun.o dart.o

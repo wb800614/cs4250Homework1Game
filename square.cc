@@ -9,10 +9,10 @@
 
 #include "square.h"
 
-GLint Animal1::NumPoints=4;
-bool Animal1::inited=false;
+GLint Animal::NumPoints=4;
+bool Animal::inited=false;
 
-void Animal1::init_points()
+void Animal::init_points()
 {
   if (!inited) {
     points[0+index]= vec2( 1,  1);
@@ -27,16 +27,37 @@ void Animal1::init_points()
 }
 
 // Default constructor
-Animal1::Animal1() : Object()
+Animal::Animal() : Object()
 {
+  //Default Body Size = 10.0
+  body_size = 10;
+
+  //Animal hasn't been hit yet
+  hit = false;
+
+  laying_down = false;
+
+  //What direction the animal is running 
+  running_direction_x = RIGHT;
+  running_direction_y = DOWN;
+
   init_points();
 }
 
 // Constructor if start of square vertices aren't at 0.
-Animal1::Animal1(GLuint nindex, vec2 *npoints, GLint noffsetLoc, GLint nsizeLoc, GLint ncolorLoc): Object()
+Animal::Animal(GLuint nindex, vec2 *npoints, GLint noffsetLoc, GLint nsizeLoc, GLint ncolorLoc): Object()
 {
   // Default index is the start (0).
   index = nindex;
+
+  //What direction the animal is running 
+  running_direction_x = RIGHT;
+  running_direction_y = DOWN;
+
+  //Animal hasn't been hit yet
+  hit = false;
+
+  laying_down = false;
 
   // Update the location of the points array from the main program.
   points = npoints;
@@ -50,7 +71,7 @@ Animal1::Animal1(GLuint nindex, vec2 *npoints, GLint noffsetLoc, GLint nsizeLoc,
 }
 
 // Code to call to draw a square.
-void Animal1::draw(bool select_mode)
+void Animal::draw(bool select_mode)
 {
   // Pass the current size of the square
   glUniform1f(sizeLoc, size);
@@ -61,20 +82,50 @@ void Animal1::draw(bool select_mode)
 }
 
 // Update the position of the square from time
-void Animal1::update()
+void Animal::update()
 {
-  if (isVisible || (glutGet(GLUT_ELAPSED_TIME) - last_time) > timeout)
+  if (hit)
+  {
+    if (glutGet(GLUT_ELAPSED_TIME)-last_time < TRANQ_RUNTIME) 
+    {
+      const GLfloat max_speed= 400.0/1000.0;
+      vec2 dir = vec2(1, 0);
+
+      if (x >= window_size.x) 
+        running_direction_x = LEFT;
+      if (x <= 0)
+        running_direction_x = RIGHT;
+      dir = (compute_last_update_call_time())*max_speed*normalize(dir);
+      // Update location
+      x+=(dir.x * running_direction_x);
+    }
+    else 
+    {
+      hit = false;
+      isVisible = false;
+      set_last_time();
+      animal_fall();
+      laying_down = true;
+    }
+  }
+  else if ((isVisible || (glutGet(GLUT_ELAPSED_TIME) - last_time) > timeout) && !laying_down)
   {
     isVisible = true;
     const GLfloat max_speed= 200.0/1000.0; // pixels/msec max speed
   
-    vec2 dir = vec2(1, 0);
+    vec2 dir = vec2(1, 1);
 
-    if (x < ground.x) 
+    if (x < window_size.x) 
     { 
       dir = (compute_last_update_call_time())*max_speed*normalize(dir);
       // Update location
       x+=dir.x;
+      if (y >= window_size.y/2)
+        running_direction_y = DOWN;
+      if (y <= 0)
+        running_direction_y = UP;
+      y+=(dir.y * running_direction_y);
+      change_size();
     } 
     else 
     {
@@ -86,5 +137,27 @@ void Animal1::update()
     set_last_time();
   }
   set_last_update_call_time();
+}
+
+void Animal::set_body_size(GLfloat s)
+{
+  body_size = s;
+}
+
+void Animal::animal_hit()
+{
+  hit = true;
+}
+
+//Draw animal dead (dose was too strong for animal size)
+void Animal::animal_die()
+{
+
+}
+
+//Draw animal laying dead
+void Animal::animal_fall()
+{
+  
 }
  

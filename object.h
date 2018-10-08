@@ -47,6 +47,9 @@ class Object
   // Get the current object's position
   vec2 get_pos();
 
+  // Get the current object's size
+  GLfloat get_size();
+
   void set_window_size(vec2 window);
 
   // Update the last updated time to now.
@@ -72,7 +75,12 @@ protected:
   vec2 window_size;
   vec2 ground;
 
-  GLfloat size; // size of object (see individual objects for specific meaning)
+  // size of object (see individual objects for specific meaning)
+  GLfloat size; 
+
+  //Max height and width of animal
+  GLfloat max_h;
+  GLfloat max_w;
 
   GLfloat timeout; //time that object waits before initial move (milliseconds)
 

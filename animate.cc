@@ -70,6 +70,11 @@ extern "C" void display()
   
   MyScene->gun->draw();
 
+  for(int i = 0; i < MyScene->count_of_darts; i++)
+  {
+    MyScene->darts[i]->draw();
+  }
+
   glutSwapBuffers ();
 }
 
@@ -85,8 +90,10 @@ extern "C" void idle()
     {
       MyScene->animals_1[i] -> update();
     }
-
-    // Make MySquare and MyCircle follow MySquare2, but rotate around it
+    for(int i = 0; i < MyScene->count_of_darts; i++)
+    {
+      MyScene->darts[i]->update();
+    }
 
     glutPostRedisplay();
   }
@@ -108,8 +115,8 @@ extern "C" void mouse(int btn, int state, int x, int y)
 
     // Flush ensures all commands have drawn
     glFlush();
-
-    MyScene->FireGun(x,y);
+    std::cout << "x : " << x << " y : " << y << std::endl;
+    MyScene->FireGun(x,win_h-y);
 
     glClearColor (0.0, 0.0, 0.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT);
@@ -192,18 +199,25 @@ extern "C" void key(unsigned char k, int xx, int yy)
   case 'Q': 
     exit(0);
     break;
-  // make the size of the square larger
-  case '+':
+  //Set dose size to 10
+  case '1':
+    std::cout << "Set dose size to 10" << std::endl;
+    MyScene->Set_Dose(10);
     break;
-  // make the size of the square smaller
-  case '-':
+  //Set dose size to 20
+  case '2':
+    std::cout << "Set dose size to 20" << std::endl;
+    MyScene->Set_Dose(20);
     break;
-  case 'c':
-    clear = !clear;
+  //Set dose size to 30
+  case '3':
+    std::cout << "Set dose size to 30" << std::endl;
+    MyScene->Set_Dose(30);
     break;
-  case '>':
-    break;
-  case '<':
+  //Set dose size to 40
+  case '4':
+    std::cout << "Set dose size to 40" << std::endl;
+    MyScene->Set_Dose(40);
     break;
   case ' ':
       

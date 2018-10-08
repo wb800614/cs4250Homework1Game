@@ -30,12 +30,19 @@ void Dart::init_points()
 Dart::Dart() : Object()
 {
   isShot = false;
+  TrackerOn = false;
   init_points();
 }
 
 // Constructor if start of square vertices aren't at 0.
 Dart::Dart(GLuint nindex, vec2 *npoints, GLint noffsetLoc, GLint nsizeLoc, GLint ncolorLoc): Object()
 {
+  //Dart has not been shot yet
+  isShot = false;
+
+  //Since dart is not shot yet, tracker is off
+  TrackerOn = false;
+
   // Default index is the start (0).
   index = nindex;
 
@@ -61,30 +68,40 @@ void Dart::draw(bool select_mode)
   glDrawArrays(GL_TRIANGLE_FAN, index, NumPoints);
 }
 
+//Set isShot to true
+void Dart::Fire_Dart()
+{
+  isShot = true;
+}
+
+//Set tracker on an object
+void Dart::Set_Tracker(Animal * t)
+{
+  TrackerOn = true;
+  target = t;
+}
+
 // Update the position of the square from time
 void Dart::update()
 {
-  if (isVisible || (glutGet(GLUT_ELAPSED_TIME) - last_time) > timeout)
+  if (isShot)
   {
-    isVisible = true;
-    const GLfloat max_speed= 200.0/1000.0; // pixels/msec max speed
-  
-    vec2 dir = vec2(1, 0);
-
-    if (x < ground.x) 
-    { 
-      dir = (compute_last_update_call_time())*max_speed*normalize(dir);
-      // Update location
-      x+=dir.x;
-    } 
+    if (TrackerOn && target != NULL)
+    {
+      vec2 new_pos = target -> get_pos();
+      move(new_pos.x, new_pos.y);
+    }
+    if (size - 0.5 > 0)
+      change_size(size-0.5);
     else 
     {
-      isVisible = false;
-      y = rand()%((int)window_size.y/2 + 1);
-      move(-1, y);
-      change_size();
+      isShot = false;
+      if (TrackerOn && target != NULL)
+      {
+        if (!target->hit)
+          target->animal_hit();
+      }
     }
-    set_last_time();
   }
   set_last_update_call_time();
 }
