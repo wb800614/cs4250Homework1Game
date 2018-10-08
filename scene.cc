@@ -9,6 +9,14 @@ Scene::Scene(vec2 window)
 	dose_selected = 10;
 }
 
+Scene::~Scene()
+{
+	for(int i = 0; i < count_of_animals; i++)
+		delete animals_1[i];
+	for(int i = 0; i < count_of_darts; i++)
+		delete darts[i];
+}
+
 void Scene::SetWindowSize(vec2 window)
 {
 	window_size = window;

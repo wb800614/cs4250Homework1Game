@@ -38,6 +38,7 @@ class Scene
 		//Setup functions
 		Scene();
 		Scene(vec2 window);
+		~Scene();
 		void SetWindowSize(vec2 window);
 		void Set_Dose(GLfloat d);
 		void InitBackground(GLuint nindex, vec2 *npoints, GLint noffsetLoc, GLint nsizeLoc, GLint ncolorLoc);
