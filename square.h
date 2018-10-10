@@ -18,7 +18,12 @@ class Animal :public Object
 {
 public:
   // How many points are needed to specify the square
-  static GLint NumPoints;
+  static GLint NumDeerPoints;
+  static GLint NumRabbitPoints;
+  static GLint NumBearPoints;
+  static const int DEER = 1;
+  static const int RABBIT = 2;
+  static const int BEAR = 3;
 
   //Whether animal was hit by dart yet
   bool hit;
@@ -32,7 +37,9 @@ public:
   Animal(GLuint nindex, vec2 *npoints, GLint noffsetLoc, GLint nsizeLoc, GLint ncolorLoc);
 
   // Initialize the points in the points array for square.
-  void init_points();
+  void init_deer_points();
+  void init_rabbit_points();
+  void init_bear_points();
 
   // Code to call to draw a square.
   // If select is true, then use the selection color.
@@ -44,17 +51,24 @@ public:
   //Set body size of animal
   void set_body_size(GLfloat s);
 
+  void set_animal_type(int type);
+
   void animal_hit();
 
   void animal_die();
 
-  void animal_fall();
+  void animal_sleep();
+
+  void animal_wake();
+
+  bool is_laying_down();
   
 private:
-  static bool inited;
+  bool inited;
   bool laying_down;
   int running_direction_x;
   int running_direction_y;
+  int animal_type;
 
   const int TRANQ_RUNTIME = 4000; // 4 seconds before animal sleeps or dies
   const int LEFT = -1;

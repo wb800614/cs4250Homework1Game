@@ -65,7 +65,7 @@ extern "C" void display()
 
   for(int i = 0; i < MyScene->count_of_animals; i++)
   {
-    MyScene->animals_1[i]->draw();
+      MyScene->animals_1[i]->draw();
   }
   
   MyScene->gun->draw();
@@ -86,14 +86,7 @@ extern "C" void display()
 extern "C" void idle()
 {
   if (updating) {
-    for(int i = 0; i < MyScene->count_of_animals; i++)
-    {
-      MyScene->animals_1[i] -> update();
-    }
-    for(int i = 0; i < MyScene->count_of_darts; i++)
-    {
-      MyScene->darts[i]->update();
-    }
+    MyScene->UpdateScene();
 
     glutPostRedisplay();
   }
@@ -115,7 +108,6 @@ extern "C" void mouse(int btn, int state, int x, int y)
 
     // Flush ensures all commands have drawn
     glFlush();
-    std::cout << "x : " << x << " y : " << y << std::endl;
     MyScene->FireGun(x,win_h-y);
 
     glClearColor (0.0, 0.0, 0.0, 1.0);
@@ -341,14 +333,14 @@ void init()
   MyScene = new Scene(vec2(win_w, win_h));
 
   // Initialize points for animals
-  points = new vec2[Scene::Num_Points];
+  points = new vec2[MyScene->GetNumberOfPointsRequired()];
 
   //Build scene object
   MyScene->Init(0, points, offsetLoc, sizeLoc, colorLoc);
 
   // Send the data to the graphics card, after it has been generated
   // by creating the objects in the world (above).
-  glBufferData(GL_ARRAY_BUFFER, (Scene::Num_Points)*sizeof(vec2), points, GL_STATIC_DRAW);
+  glBufferData(GL_ARRAY_BUFFER, (MyScene->GetNumberOfPointsRequired())*sizeof(vec2), points, GL_STATIC_DRAW);
 }
 
 //  Main Program

@@ -91,13 +91,15 @@ void Dart::update()
       vec2 new_pos = target -> get_pos();
       move(new_pos.x, new_pos.y);
     }
+    //If dart hasn't reached animal yet
     if (size - 0.5 > 0)
       change_size(size-0.5);
     else 
     {
-      isShot = false;
+      //Animal is being tracked by dart
       if (TrackerOn && target != NULL)
       {
+        //Animal hasn't been hit by dart yet
         if (!target->hit)
           target->animal_hit();
       }

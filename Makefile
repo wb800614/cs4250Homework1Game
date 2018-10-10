@@ -15,7 +15,7 @@ include /Users/wesleybook/Desktop/Fall2018/cs4250/setup/Makefile.defs
 # animate is the executable to be created.
 animate: animate.cc square.o object.o scene.o gun.o dart.o
 	$(CC) animate.cc  $(InitShader) scene.o square.o object.o gun.o dart.o $(OPTIONS) $(LDLIBS) -o animate
-
+	./animate
 # One pattern for each other file to be compiled.  These will be
 # object files (i.e. .o files) Notice that only the options arguments
 # are passed, not the LDLIBS as there will be no linking done for the

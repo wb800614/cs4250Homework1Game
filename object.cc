@@ -138,7 +138,6 @@ vec3 Object::getSelectColor()
 void Object::set_random_timeout()
 {
   timeout = rand()%((int)MAX_TIMEOUT + 1);
-  std::cout << timeout << std::endl;
 }
 
 //Set ground size

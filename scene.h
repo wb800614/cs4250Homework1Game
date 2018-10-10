@@ -18,7 +18,6 @@ class Scene
 		//
 		vec2 window_size;
 
-		//Background
 		GLuint index;
 		vec2 *points;
 		GLint offsetLoc;
@@ -27,8 +26,7 @@ class Scene
 		GLfloat dose_selected;
 
 	public:
-		static GLint Num_Points;
-		static const int count_of_animals = 5;
+		static const int count_of_animals = 6;
 		static const int count_of_darts=10;
 		int next_shot_index;
 		Gun * gun;
@@ -44,9 +42,12 @@ class Scene
 		void InitBackground(GLuint nindex, vec2 *npoints, GLint noffsetLoc, GLint nsizeLoc, GLint ncolorLoc);
 		void DrawBackground();
 		void Init(GLuint nindex, vec2 *npoints, GLint noffsetLoc, GLint nsizeLoc, GLint ncolorLoc);
+		void InitBackground();
 		void InitAnimals();
 		void InitGun();
 		void InitDarts();
+		void UpdateScene();
+		int GetNumberOfPointsRequired();
 
 		void UpdateGun(GLint x, GLint y);
 		void FireGun(GLint x, GLint y);

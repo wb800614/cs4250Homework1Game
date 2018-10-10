@@ -1,7 +1,5 @@
 #include "scene.h"
 
-GLint Scene::Num_Points = 4 * (Scene::count_of_animals + 1) + 18;
-
 Scene::Scene(vec2 window)
 {
 	window_size = window;
@@ -42,6 +40,34 @@ void Scene::DrawBackground()
 	
 }
 
+void Scene::InitBackground()
+{
+	points[0]= vec2( 1,  1);
+    points[1]= vec2(-1,  1);
+    points[3]= vec2(-1, -1);
+    points[2]= vec2( 1, -1);
+    index+=4;
+}
+
+int Scene::GetNumberOfPointsRequired()
+{
+	int returnval = 0;
+	for(int i = 0; i < count_of_animals; i++)
+  	{
+	    if (i % 2 == 0)
+	    	returnval+=Animal::NumDeerPoints;
+		else 
+		{
+			if (i % 5 == 0)
+				returnval+= Animal::NumBearPoints;
+			else
+				returnval += Animal::NumRabbitPoints;
+		}
+  	}
+  	returnval += (4 + 4 + 18);
+  	return returnval;
+}
+
 void Scene::Init(GLuint nindex, vec2 *npoints, GLint noffsetLoc, GLint nsizeLoc, GLint ncolorLoc)
 {
 	index = nindex;
@@ -50,6 +76,7 @@ void Scene::Init(GLuint nindex, vec2 *npoints, GLint noffsetLoc, GLint nsizeLoc,
 	sizeLoc = nsizeLoc;
 	colorLoc = ncolorLoc;
 
+	InitBackground();
 	InitAnimals();
 	InitGun();
 	InitDarts();
@@ -63,16 +90,30 @@ void Scene::InitAnimals()
 		GLfloat y = rand()%((int)window_size.y/2 + 1);
 	    animals_1[i] = new Animal(index, points, offsetLoc, sizeLoc, colorLoc);
 	    animals_1[i]->set_window_size(window_size);
+
 	    if (i % 2 == 0)
-		    animals_1[i]->set_body_size(10);
-		else
-			animals_1[i]->set_body_size(20);
+	    {
+	    	animals_1[i]-> set_animal_type(Animal::DEER);
+	    	index+=Animal::NumDeerPoints;
+	    }
+		else 
+		{
+			if (i % 5 == 0)
+			{
+				animals_1[i]->set_animal_type(Animal::BEAR);
+				index+=Animal::NumBearPoints;
+			}
+			else
+			{
+				animals_1[i]->set_animal_type(Animal::RABBIT);
+				index+= Animal::NumRabbitPoints;
+			}
+		}
 	    animals_1[i]->move(-1,y);
 	    animals_1[i]->change_size();
 	    animals_1[i]->set_random_timeout();
 	    animals_1[i]->set_ground(vec2(window_size.x, window_size.y/2.0));
   	}
-  	index+=4;
 }
 
 void Scene::InitGun()
@@ -127,6 +168,54 @@ void Scene::Check_For_Tracker()
 			darts[next_shot_index]->Set_Tracker(animals_1[i]);
 		}
 	}
+}
+
+void Scene::UpdateScene()
+{
+	for(int i = 0; i < count_of_animals; i++)
+    {
+      animals_1[i] -> update();
+      if (animals_1[i]->is_laying_down())
+      {
+      	if (animals_1[i]->body_size == 10)
+      	{
+      		//Animal dies
+  			if (dose_selected > 10)
+  				animals_1[i]->animal_die();
+  			else
+      			animals_1[i]->animal_sleep();
+      	}
+      	else if (animals_1[i]->body_size == 20)
+      	{
+      		if (dose_selected > 20)
+  				animals_1[i]->animal_die();
+  			else if (dose_selected < 20)
+  				animals_1[i]->animal_wake();
+  			else
+  				animals_1[i]->animal_sleep();
+      	}
+      	else if (animals_1[i]->body_size == 30)
+      	{
+      		if (dose_selected > 30)
+  				animals_1[i]->animal_die();
+  			else if (dose_selected < 30)
+  				animals_1[i]->animal_wake();
+  			else
+  				animals_1[i]->animal_sleep();
+      	}
+      	else 
+      	{
+      		if (dose_selected < 40)
+  				animals_1[i]->animal_wake();
+  			else
+  				animals_1[i]->animal_sleep();
+      	}
+      }
+    }
+    for(int i = 0; i < count_of_darts; i++)
+    {
+      darts[i]->update();
+    }
 }
 
 
