@@ -85,6 +85,7 @@ extern "C" void display()
 // location of MySquare.
 extern "C" void idle()
 {
+  glBufferData(GL_ARRAY_BUFFER, (MyScene->GetNumberOfPointsRequired())*sizeof(vec2), points, GL_STATIC_DRAW);
   if (updating) {
     MyScene->UpdateScene();
 
@@ -137,6 +138,7 @@ extern "C" void myReshape(int w, int h)
   glViewport(0,0,w,h);
   win_h = h;
   win_w = w;
+  MyScene->SetWindowSize(vec2(w,h));
   glUniform2f(windowSizeLoc, win_w, win_h);       // Pass the window size
 						  // size
   glutPostRedisplay();
@@ -206,11 +208,6 @@ extern "C" void key(unsigned char k, int xx, int yy)
     std::cout << "Set dose size to 30" << std::endl;
     MyScene->Set_Dose(30);
     break;
-  //Set dose size to 40
-  case '4':
-    std::cout << "Set dose size to 40" << std::endl;
-    MyScene->Set_Dose(40);
-    break;
   case ' ':
       
     break;
@@ -251,7 +248,7 @@ void myinit()
   win_w = 900;
   glutInitWindowPosition(20,20);
 
-  glutCreateWindow("Animation test");
+  glutCreateWindow("Dart Game");
 
   // Color initializations
   glClearColor(0.0, 0.0, 0.0, 1.0);

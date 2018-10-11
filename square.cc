@@ -60,13 +60,59 @@ void Animal::init_deer_points()
 
     //Tail
     points[index++]= vec2(-1.3, 0.5);
-    points[index++]= vec2(-1.35, 0.55);
+    points[index++]= vec2(-1.35, 1.0);
     points[index++]= vec2(-1.38, 0.65);
     points[index++]= vec2(-1.4, 0.7);
 
     index-=30;
     inited = true;
   }
+}
+
+void Animal::init_deer_laying_points()
+{
+    //Back and top of nect
+    points[index++]= vec2(-1,  1);
+    points[index++]= vec2(-0.9, 1.1);
+    points[index++]= vec2(-0.8,  1.2);
+    points[index++]= vec2(-0.4, 1.3);
+    points[index++]= vec2(-0.2, 1.35);
+    points[index++]= vec2(-0.1, 1.37);
+    points[index++]= vec2(0.0, 1.375);
+    points[index++]= vec2(0.1, 1.37);
+    points[index++]= vec2(0.2, 1.35);
+    points[index++]= vec2(0.4, 1.3);
+    points[index++]= vec2(0.8, 1.2);
+    points[index++]= vec2(0.9, 1.05);
+    points[index++]= vec2(1.0, 1.05);
+
+    //Nose
+    points[index++]= vec2(1.2, 1.05);
+    points[index++]= vec2(1.24, 1.05);
+    points[index++]= vec2(1.33, 1.1);
+    points[index++]= vec2(1.4, 1.15);
+    points[index++]= vec2(1.45, 1.152);
+    points[index++]= vec2(1.5, 1.15);
+
+    //Front leg
+    points[index++]= vec2(1.55, 1.1);
+    points[index++]= vec2(1.6, 1.08);
+    points[index++]= vec2(1.78, 0.95);
+    points[index++]= vec2(1.75, 0.9);
+    points[index++]= vec2(0.0, 1.0);
+
+    //Back leg
+    points[index++]= vec2(-0.1, 1.0);
+    points[index++]= vec2(-0.5, 1.0);
+
+    //Tail
+    points[index++]= vec2(-0.6, 1.0);
+    points[index++]= vec2(-0.6, 1.0);
+    points[index++]= vec2(-0.9, 1.0);
+    points[index++]= vec2(-1.0, 1.0);
+
+    index-=30;
+    draw();
 }
 
 void Animal::init_rabbit_points()
@@ -105,6 +151,52 @@ void Animal::init_rabbit_points()
     index-=16;
     inited = true;
   }
+}
+
+void Animal::init_rabbit_laying_points()
+{
+    //Back and top of nect
+    points[index++]= vec2(-1,  1);
+    points[index++]= vec2(-0.85, 1.15);
+    points[index++]= vec2(-0.7,  1.25);
+    points[index++]= vec2(-0.65, 1.25);
+    points[index++]= vec2(-0.6, 1.23);
+    points[index++]= vec2(-0.5, 1.15);
+    points[index++]= vec2(-0.3, 1.14);
+    points[index++]= vec2(-0.25, 1.19);
+    points[index++]= vec2(-0.2, 1.21);
+    points[index++]= vec2(-0.1, 1.19);
+    points[index++]= vec2(-0.05, 1.0);
+    points[index++]= vec2(-0.05, 1.0);
+    points[index++]= vec2(-0.05, 1.0);
+
+    //Nose
+    points[index++]= vec2(-0.05, 1.0);
+    points[index++]= vec2(-0.05, 1.0);
+    points[index++]= vec2(-0.05, 1.0);
+    points[index++]= vec2(-0.05, 1.0);
+    points[index++]= vec2(-0.05, 1.0);
+    points[index++]= vec2(-0.05, 1.0);
+
+    //Front leg
+    points[index++]= vec2(-0.05, 1.0);
+    points[index++]= vec2(-0.05, 1.0);
+    points[index++]= vec2(-0.05, 1.0);
+    points[index++]= vec2(-0.05, 1.0);
+    points[index++]= vec2(-0.05, 1.0);
+
+    //Back leg
+    points[index++]= vec2(-0.05, 1.0);
+    points[index++]= vec2(-0.05, 1.0);
+
+    //Tail
+    points[index++]= vec2(-0.05, 1.0);
+    points[index++]= vec2(-0.05, 1.0);
+    points[index++]= vec2(-0.05, 1.0);
+    points[index++]= vec2(-1.0, 1.0);
+
+    index-=30;
+    draw();
 }
 
 void Animal::init_bear_points()
@@ -155,13 +247,72 @@ void Animal::init_bear_points()
 
     //Tail
     points[index++]= vec2(-1.35, 0.5);
-    points[index++]= vec2(-1.4, 0.55);
+    points[index++]= vec2(-1.4, 1.0);
     points[index++]= vec2(-1.42, 0.65);
     points[index++]= vec2(-1.5, 0.7);
 
     index-=31;
     inited=true;
   }
+}
+
+void Animal::init_bear_laying_points()
+{
+    //Back and top of nect
+    points[index++]= vec2(-1,  1);
+    points[index++]= vec2(-0.9, 1.1);
+    points[index++]= vec2(-0.8,  1.2);
+    points[index++]= vec2(-0.4, 1.3);
+    points[index++]= vec2(-0.2, 1.35);
+    points[index++]= vec2(-0.1, 1.37);
+    points[index++]= vec2(0.0, 1.375);
+    points[index++]= vec2(0.1, 1.37);
+    points[index++]= vec2(0.2, 1.35);
+    points[index++]= vec2(0.4, 1.3);
+    points[index++]= vec2(0.8, 1.2);
+    points[index++]= vec2(0.9, 1.05);
+    points[index++]= vec2(1.0, 1.05);
+
+    //Nose
+    points[index++]= vec2(1.2, 1.05);
+    points[index++]= vec2(1.24, 1.05);
+    points[index++]= vec2(1.33, 1.1);
+    points[index++]= vec2(1.4, 1.15);
+    points[index++]= vec2(1.45, 1.152);
+    points[index++]= vec2(1.5, 1.15);
+
+    //Front leg
+    points[index++]= vec2(1.55, 1.1);
+    points[index++]= vec2(1.6, 1.08);
+    points[index++]= vec2(1.78, 0.95);
+    points[index++]= vec2(1.75, 0.9);
+    points[index++]= vec2(0.0, 1.0);
+
+    //Back leg
+    points[index++]= vec2(-0.1, 1.0);
+    points[index++]= vec2(-0.5, 1.0);
+
+    //Tail
+    points[index++]= vec2(-0.6, 1.0);
+    points[index++]= vec2(-0.6, 1.0);
+    points[index++]= vec2(-0.9, 1.0);
+    points[index++]= vec2(-1.0, 1.0);
+
+    index-=30;
+    draw();
+}
+
+void Animal::init_angry_bear_points()
+{
+  animal_type = ANGRYBEAR;
+  points[index]= vec2( 0,  0);
+  GLfloat delta=(2.0*M_PI)/float(NumBearPoints-2);
+  GLfloat angle=0.0;
+  for (size_t ind = 1; ind < NumBearPoints; ++ind) {
+    points[index+ind]=vec2(cos(angle), sin(angle));
+    angle+=delta;
+  }
+  draw();
 }
 
 // Default constructor
@@ -183,7 +334,10 @@ Animal::Animal() : Object()
   animal_type = DEER;
 
   inited = false;
-
+  laying_inited = false;
+  isAngry = false;
+  angry_inited= false;
+  Animal_Kill = false;
 }
 
 // Constructor if start of square vertices aren't at 0.
@@ -208,6 +362,11 @@ Animal::Animal(GLuint nindex, vec2 *npoints, GLint noffsetLoc, GLint nsizeLoc, G
   offsetLoc=noffsetLoc;
   sizeLoc=nsizeLoc;
   colorLoc=ncolorLoc;
+
+  laying_inited = false;
+  isAngry = false;
+  angry_inited = false;
+  Animal_Kill = false;
 }
 
 void Animal::set_animal_type(int type)
@@ -231,33 +390,31 @@ void Animal::set_animal_type(int type)
 }
 
 // Code to call to draw a square.
-void Animal::draw(bool select_mode)
+void Animal::draw()
 {
   //std::cout << "animal : " << animal_type << " index " << index << " x " << x << " y " << y << "\n";
   // Pass the current size of the square
-  glUniform1f(sizeLoc, size);
+  glUniform1f(sizeLoc, size*2.0);
   glUniform2i(offsetLoc, int(x), int(y));
 
   switch(animal_type)
   {
     case DEER:
-      glUniform4f(colorLoc, 0.5, 0.3, 0.0, 1.0);
-      glBegin(GL_TRIANGLE_STRIP);
-      for(int i = index;i < NumDeerPoints+index-1; i++){
-          int k = 2 * 3.14 / 1;
-          int y = 1 * sin(k * points[i].x);
-          glVertex3f(points[i].x, points[i].y-35, 0);
-          glVertex3f(points[i].x, points[i].y, 0);
-      }
-      glEnd();
+      glUniform4f(colorLoc, r,g,b, 1.0);
+      glDrawArrays(GL_LINE_LOOP, index, NumDeerPoints);
       break;
     case RABBIT:
-      glUniform4f(colorLoc, 1.0, 0.0, 1.0, 1.0);
+      glUniform4f(colorLoc, r,g,b, 1.0);
       glDrawArrays(GL_LINE_LOOP, index, NumRabbitPoints);
       break;
     case BEAR:
-      glUniform4f(colorLoc, 0.4, 0.1, 0.1, 1.0);
+      glUniform4f(colorLoc, r,g,b, 1.0);
       glDrawArrays(GL_LINE_LOOP, index, NumBearPoints);
+      break;
+    case ANGRYBEAR:
+      glUniform2i(offsetLoc, int(window_size.x/2), int(window_size.y/2));
+      glUniform4f(colorLoc, r,g,b, 1.0);
+      glDrawArrays(GL_TRIANGLE_FAN, index, NumBearPoints);
       break;
   }  
 }
@@ -265,7 +422,17 @@ void Animal::draw(bool select_mode)
 // Update the position of the square from time
 void Animal::update()
 {
-  if (hit)
+  if (isAngry)
+  {
+    x = window_size.x/2;
+    y = window_size.y/2;
+    change_size(size+0.5);
+    if (size >= 100)
+    {
+      Animal_Kill = true;
+    }
+  }
+  else if (hit)
   {
     if (glutGet(GLUT_ELAPSED_TIME)-last_time < TRANQ_RUNTIME && !laying_down) 
     {
@@ -291,12 +458,17 @@ void Animal::update()
       isVisible = false;
       set_last_time();
       laying_down = true;
+      if (!laying_inited)
+      {
+        laying_inited = true;
+        animal_lay_down();
+      }
     }
   }
   else if ((isVisible || (glutGet(GLUT_ELAPSED_TIME) - last_time) > timeout) && !laying_down)
   {
     isVisible = true;
-    const GLfloat max_speed= 100.0/1000.0; // pixels/msec max speed
+    const GLfloat max_speed= 200.0/1000.0; // pixels/msec max speed
   
     vec2 dir = vec2(1, 0.5);
 
@@ -339,18 +511,61 @@ void Animal::animal_hit()
 //Draw animal dead (dose was too strong for animal size)
 void Animal::animal_die()
 {
-
+  color(vec3(1.0,0.0,0.0));
+  draw();
 }
 
 //Draw animal laying asleep
 void Animal::animal_sleep()
 {
-  
+  color(vec3(0.0,1.0,0.0));
+  draw();
+}
+
+void Animal::animal_lay_down()
+{
+  switch(animal_type)
+  {
+    case DEER:
+      init_deer_laying_points();
+      break;
+    case RABBIT:
+      init_rabbit_laying_points();
+      break;
+    case BEAR:
+      init_bear_laying_points();
+      break;
+  }
 }
 
 void Animal::animal_wake()
 {
+  set_last_time();
+  isVisible = true;
+  laying_down = false;
+  laying_inited = false;
+  inited = false;
+  switch(animal_type)
+  {
+    case DEER:
+      init_deer_points();
+      draw();
+      break;
+    case RABBIT:
+      init_rabbit_points();
+      draw();
+      break;
+    case BEAR:
+      init_bear_points();
+      draw();
+      break;
+  }
+}
 
+void Animal::animal_angry()
+{
+  isAngry = true;
+  init_angry_bear_points();
 }
 
 bool Animal::is_laying_down()

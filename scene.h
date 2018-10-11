@@ -8,6 +8,7 @@
 #include <Angel.h>
 #include <iostream>
 #include <stdlib.h>
+#include <string>
 #include "square.h"
 #include "gun.h"
 #include "dart.h"
@@ -24,6 +25,8 @@ class Scene
 		GLint sizeLoc;
 		GLint colorLoc;
 		GLfloat dose_selected;
+		bool isGameOver;
+		int score;
 
 	public:
 		static const int count_of_animals = 6;

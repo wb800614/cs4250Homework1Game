@@ -5,6 +5,8 @@ Scene::Scene(vec2 window)
 	window_size = window;
 	next_shot_index = 0;
 	dose_selected = 10;
+	isGameOver = false;
+	score = 0;
 }
 
 Scene::~Scene()
@@ -18,6 +20,11 @@ Scene::~Scene()
 void Scene::SetWindowSize(vec2 window)
 {
 	window_size = window;
+	for(int i = 0; i < count_of_animals; i++)
+		animals_1[i]->set_window_size(window_size);
+	for(int i = 0; i < count_of_darts; i++)
+		darts[i]->set_window_size(window_size);
+	DrawBackground();
 }
 
 void Scene::Set_Dose(GLfloat d)
@@ -32,9 +39,9 @@ void Scene::DrawBackground()
   	glUniform2i(offsetLoc, int(window_size.x/2), int(window_size.y/2));
     glUniform4f(colorLoc, 0.0, 0.4, 0.0, 1.0);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-	glUniform1f(sizeLoc, window_size.x/2);
 	//Drawing sky
-  	glUniform2i(offsetLoc, int(window_size.x/2), int(window_size.y));
+	glUniform1f(sizeLoc, window_size.x/2);
+  	glUniform2i(offsetLoc, int(window_size.x/2), int(window_size.y*3/2.5));
     glUniform4f(colorLoc, 0.0, 0.0, 0.8, 1.0);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 	
@@ -94,6 +101,7 @@ void Scene::InitAnimals()
 	    if (i % 2 == 0)
 	    {
 	    	animals_1[i]-> set_animal_type(Animal::DEER);
+	    	animals_1[i]->color(vec3(0.5, 0.3, 0.0));
 	    	index+=Animal::NumDeerPoints;
 	    }
 		else 
@@ -101,11 +109,13 @@ void Scene::InitAnimals()
 			if (i % 5 == 0)
 			{
 				animals_1[i]->set_animal_type(Animal::BEAR);
+				animals_1[i]->color(vec3(0.4, 0.1, 0.1));
 				index+=Animal::NumBearPoints;
 			}
 			else
 			{
 				animals_1[i]->set_animal_type(Animal::RABBIT);
+				animals_1[i]->color(vec3(1.0, 1.0, 1.0));
 				index+= Animal::NumRabbitPoints;
 			}
 		}
@@ -150,7 +160,10 @@ void Scene::FireGun(GLint x, GLint y)
 		Check_For_Tracker();
 		next_shot_index++;
 	}
-	
+	else 
+	{
+		isGameOver = true;
+	}
 }
 
 void Scene::Check_For_Tracker()
@@ -172,50 +185,70 @@ void Scene::Check_For_Tracker()
 
 void Scene::UpdateScene()
 {
-	for(int i = 0; i < count_of_animals; i++)
-    {
-      animals_1[i] -> update();
-      if (animals_1[i]->is_laying_down())
-      {
-      	if (animals_1[i]->body_size == 10)
-      	{
-      		//Animal dies
-  			if (dose_selected > 10)
-  				animals_1[i]->animal_die();
-  			else
-      			animals_1[i]->animal_sleep();
-      	}
-      	else if (animals_1[i]->body_size == 20)
-      	{
-      		if (dose_selected > 20)
-  				animals_1[i]->animal_die();
-  			else if (dose_selected < 20)
-  				animals_1[i]->animal_wake();
-  			else
-  				animals_1[i]->animal_sleep();
-      	}
-      	else if (animals_1[i]->body_size == 30)
-      	{
-      		if (dose_selected > 30)
-  				animals_1[i]->animal_die();
-  			else if (dose_selected < 30)
-  				animals_1[i]->animal_wake();
-  			else
-  				animals_1[i]->animal_sleep();
-      	}
-      	else 
-      	{
-      		if (dose_selected < 40)
-  				animals_1[i]->animal_wake();
-  			else
-  				animals_1[i]->animal_sleep();
-      	}
-      }
-    }
-    for(int i = 0; i < count_of_darts; i++)
-    {
-      darts[i]->update();
-    }
+	//Game isnt over
+	if (!isGameOver)
+	{
+		for(int i = 0; i < count_of_animals; i++)
+	    {
+	    	if (animals_1[i]->Animal_Kill)
+	    	{
+	    		isGameOver = true;
+	    	}
+			animals_1[i] -> update();
+			if (animals_1[i]->is_laying_down())
+			{
+				if (animals_1[i]->body_size == 10)
+				{
+					//Animal dies
+					if (dose_selected > 10)
+					{
+						animals_1[i]->animal_die();
+						score -= 10;
+					}
+					else
+					{
+						animals_1[i]->animal_sleep();
+						score += 10;
+					}
+				}
+				else if (animals_1[i]->body_size == 20)
+				{
+					if (dose_selected > 20)
+					{
+						animals_1[i]->animal_die();
+						score -= 20;
+					}
+					else if (dose_selected < 20)
+						animals_1[i]->animal_wake();
+					else
+					{
+						animals_1[i]->animal_sleep();
+						score += 20;
+					}
+				}
+				else if (animals_1[i]->body_size == 30)
+				{
+					if (dose_selected < 30)
+						animals_1[i]->animal_angry();
+					else
+					{
+						animals_1[i]->animal_sleep();
+						score += 30;
+					}
+				}
+	      }
+	    }
+	    for(int i = 0; i < count_of_darts; i++)
+	    {
+	    	darts[i] -> update();
+	    }
+	    glutSetWindowTitle("Selected Dart Dose : " + std::to_string(dose_selected) + "   /   Score : " + std::to_string(score) + "");
+	}
+	//Game is over
+	else 
+	{
+		glutSetWindowTitle("GAME OVER - Score : " + score);
+	}
 }
 
 

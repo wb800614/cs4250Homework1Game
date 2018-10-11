@@ -24,9 +24,13 @@ public:
   static const int DEER = 1;
   static const int RABBIT = 2;
   static const int BEAR = 3;
+  static const int ANGRYBEAR = 4;
 
   //Whether animal was hit by dart yet
   bool hit;
+
+  //Whether animal has killed player
+  bool Animal_Kill;
 
   GLfloat body_size;
 
@@ -41,9 +45,15 @@ public:
   void init_rabbit_points();
   void init_bear_points();
 
+  void init_deer_laying_points();
+  void init_rabbit_laying_points();
+  void init_bear_laying_points();
+
+  void init_angry_bear_points();
+
   // Code to call to draw a square.
   // If select is true, then use the selection color.
-  void draw(bool select=false);
+  void draw();
 
   // Update the position of the square from time
   void update();
@@ -61,11 +71,19 @@ public:
 
   void animal_wake();
 
+  void animal_angry();
+
+  void animal_lay_down();
+
   bool is_laying_down();
   
 private:
   bool inited;
+  bool laying_inited;
+  bool angry_inited;
   bool laying_down;
+  bool isAngry;
+
   int running_direction_x;
   int running_direction_y;
   int animal_type;
