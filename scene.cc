@@ -13,6 +13,22 @@
 //*******************************************************************
 #include "scene.h"
 
+//******************************************************************
+      //                                                                  
+      //  Function:   Object
+      //                                                                  
+      //  Purpose:    default constructor to set variables to default                            
+      //                                                                  
+      //  Parameters: none
+      //                                                                  
+      // Member/Global Variables: points, index, inited
+      //
+      // Pre Conditions: points != NULL
+      //
+      // Post Conditions: returns void. sets variables to defaul values for program
+      //
+      //                                                                  
+      //******************************************************************
 Scene::Scene(vec2 window)
 {
 	window_size = window;
@@ -22,6 +38,22 @@ Scene::Scene(vec2 window)
 	score = 0;
 }
 
+//******************************************************************
+      //                                                                  
+      //  Function:   Object
+      //                                                                  
+      //  Purpose:    default constructor to set variables to default                            
+      //                                                                  
+      //  Parameters: none
+      //                                                                  
+      // Member/Global Variables: points, index, inited
+      //
+      // Pre Conditions: points != NULL
+      //
+      // Post Conditions: returns void. sets variables to defaul values for program
+      //
+      //                                                                  
+      //******************************************************************
 Scene::~Scene()
 {
 	for(int i = 0; i < count_of_animals; i++)
@@ -32,6 +64,22 @@ Scene::~Scene()
 		delete obstacles[i];
 }
 
+//******************************************************************
+      //                                                                  
+      //  Function:   Object
+      //                                                                  
+      //  Purpose:    default constructor to set variables to default                            
+      //                                                                  
+      //  Parameters: none
+      //                                                                  
+      // Member/Global Variables: points, index, inited
+      //
+      // Pre Conditions: points != NULL
+      //
+      // Post Conditions: returns void. sets variables to defaul values for program
+      //
+      //                                                                  
+      //******************************************************************
 void Scene::SetWindowSize(vec2 window)
 {
 	window_size = window;
@@ -42,11 +90,43 @@ void Scene::SetWindowSize(vec2 window)
 	DrawBackground();
 }
 
+//******************************************************************
+      //                                                                  
+      //  Function:   Object
+      //                                                                  
+      //  Purpose:    default constructor to set variables to default                            
+      //                                                                  
+      //  Parameters: none
+      //                                                                  
+      // Member/Global Variables: points, index, inited
+      //
+      // Pre Conditions: points != NULL
+      //
+      // Post Conditions: returns void. sets variables to defaul values for program
+      //
+      //                                                                  
+      //******************************************************************
 void Scene::Set_Dose(GLfloat d)
 {
 	dose_selected = d;
 }
 
+//******************************************************************
+      //                                                                  
+      //  Function:   Object
+      //                                                                  
+      //  Purpose:    default constructor to set variables to default                            
+      //                                                                  
+      //  Parameters: none
+      //                                                                  
+      // Member/Global Variables: points, index, inited
+      //
+      // Pre Conditions: points != NULL
+      //
+      // Post Conditions: returns void. sets variables to defaul values for program
+      //
+      //                                                                  
+      //******************************************************************
 void Scene::DrawBackground()
 {
 	//Drawing ground
@@ -57,6 +137,22 @@ void Scene::DrawBackground()
 	
 }
 
+//******************************************************************
+      //                                                                  
+      //  Function:   Object
+      //                                                                  
+      //  Purpose:    default constructor to set variables to default                            
+      //                                                                  
+      //  Parameters: none
+      //                                                                  
+      // Member/Global Variables: points, index, inited
+      //
+      // Pre Conditions: points != NULL
+      //
+      // Post Conditions: returns void. sets variables to defaul values for program
+      //
+      //                                                                  
+      //******************************************************************
 void Scene::InitBackground()
 {
 	points[0]= vec2( 1,  1);
@@ -66,6 +162,22 @@ void Scene::InitBackground()
     index+=4;
 }
 
+//******************************************************************
+      //                                                                  
+      //  Function:   Object
+      //                                                                  
+      //  Purpose:    default constructor to set variables to default                            
+      //                                                                  
+      //  Parameters: none
+      //                                                                  
+      // Member/Global Variables: points, index, inited
+      //
+      // Pre Conditions: points != NULL
+      //
+      // Post Conditions: returns void. sets variables to defaul values for program
+      //
+      //                                                                  
+      //******************************************************************
 int Scene::GetNumberOfPointsRequired()
 {
 	int returnval = 0;
@@ -97,6 +209,22 @@ int Scene::GetNumberOfPointsRequired()
   	return returnval;
 }
 
+//******************************************************************
+      //                                                                  
+      //  Function:   Object
+      //                                                                  
+      //  Purpose:    default constructor to set variables to default                            
+      //                                                                  
+      //  Parameters: none
+      //                                                                  
+      // Member/Global Variables: points, index, inited
+      //
+      // Pre Conditions: points != NULL
+      //
+      // Post Conditions: returns void. sets variables to defaul values for program
+      //
+      //                                                                  
+      //******************************************************************
 void Scene::Init(GLuint nindex, vec2 *npoints, GLint noffsetLoc, GLint nsizeLoc, GLint ncolorLoc)
 {
 	index = nindex;
@@ -112,6 +240,22 @@ void Scene::Init(GLuint nindex, vec2 *npoints, GLint noffsetLoc, GLint nsizeLoc,
 	InitDarts();
 }
 
+//******************************************************************
+      //                                                                  
+      //  Function:   Object
+      //                                                                  
+      //  Purpose:    default constructor to set variables to default                            
+      //                                                                  
+      //  Parameters: none
+      //                                                                  
+      // Member/Global Variables: points, index, inited
+      //
+      // Pre Conditions: points != NULL
+      //
+      // Post Conditions: returns void. sets variables to defaul values for program
+      //
+      //                                                                  
+      //******************************************************************
 void Scene::InitAnimals()
 {
 	srand(time(NULL));
@@ -149,6 +293,22 @@ void Scene::InitAnimals()
   	}
 }
 
+//******************************************************************
+      //                                                                  
+      //  Function:   Object
+      //                                                                  
+      //  Purpose:    default constructor to set variables to default                            
+      //                                                                  
+      //  Parameters: none
+      //                                                                  
+      // Member/Global Variables: points, index, inited
+      //
+      // Pre Conditions: points != NULL
+      //
+      // Post Conditions: returns void. sets variables to defaul values for program
+      //
+      //                                                                  
+      //******************************************************************
 void Scene::InitGun()
 {
 	gun = new Gun(index, points, offsetLoc, sizeLoc, colorLoc);
@@ -157,6 +317,22 @@ void Scene::InitGun()
 	index+=4;
 }
 
+//******************************************************************
+      //                                                                  
+      //  Function:   Object
+      //                                                                  
+      //  Purpose:    default constructor to set variables to default                            
+      //                                                                  
+      //  Parameters: none
+      //                                                                  
+      // Member/Global Variables: points, index, inited
+      //
+      // Pre Conditions: points != NULL
+      //
+      // Post Conditions: returns void. sets variables to defaul values for program
+      //
+      //                                                                  
+      //******************************************************************
 void Scene::InitDarts()
 {
 	for(int i = 0; i < count_of_darts; i++)
@@ -169,6 +345,22 @@ void Scene::InitDarts()
 	index+=18;
 }
 
+//******************************************************************
+      //                                                                  
+      //  Function:   Object
+      //                                                                  
+      //  Purpose:    default constructor to set variables to default                            
+      //                                                                  
+      //  Parameters: none
+      //                                                                  
+      // Member/Global Variables: points, index, inited
+      //
+      // Pre Conditions: points != NULL
+      //
+      // Post Conditions: returns void. sets variables to defaul values for program
+      //
+      //                                                                  
+      //******************************************************************
 void Scene::InitObstacles()
 {
 	srand(time(NULL));
@@ -204,11 +396,43 @@ void Scene::InitObstacles()
 	}
 }
 
+//******************************************************************
+      //                                                                  
+      //  Function:   Object
+      //                                                                  
+      //  Purpose:    default constructor to set variables to default                            
+      //                                                                  
+      //  Parameters: none
+      //                                                                  
+      // Member/Global Variables: points, index, inited
+      //
+      // Pre Conditions: points != NULL
+      //
+      // Post Conditions: returns void. sets variables to defaul values for program
+      //
+      //                                                                  
+      //******************************************************************
 void Scene::UpdateGun(GLint x, GLint y)
 {
 	gun->move(x,y);
 }
 
+//******************************************************************
+      //                                                                  
+      //  Function:   Object
+      //                                                                  
+      //  Purpose:    default constructor to set variables to default                            
+      //                                                                  
+      //  Parameters: none
+      //                                                                  
+      // Member/Global Variables: points, index, inited
+      //
+      // Pre Conditions: points != NULL
+      //
+      // Post Conditions: returns void. sets variables to defaul values for program
+      //
+      //                                                                  
+      //******************************************************************
 void Scene::FireGun(GLint x, GLint y)
 {
 	if (next_shot_index < count_of_darts)
@@ -224,6 +448,22 @@ void Scene::FireGun(GLint x, GLint y)
 	}
 }
 
+//******************************************************************
+      //                                                                  
+      //  Function:   Object
+      //                                                                  
+      //  Purpose:    default constructor to set variables to default                            
+      //                                                                  
+      //  Parameters: none
+      //                                                                  
+      // Member/Global Variables: points, index, inited
+      //
+      // Pre Conditions: points != NULL
+      //
+      // Post Conditions: returns void. sets variables to defaul values for program
+      //
+      //                                                                  
+      //******************************************************************
 void Scene::Check_For_Tracker()
 {
 	vec2 fire_pos = darts[next_shot_index]->get_pos();
@@ -259,6 +499,22 @@ void Scene::Check_For_Tracker()
 	}
 }
 
+//******************************************************************
+      //                                                                  
+      //  Function:   Object
+      //                                                                  
+      //  Purpose:    default constructor to set variables to default                            
+      //                                                                  
+      //  Parameters: none
+      //                                                                  
+      // Member/Global Variables: points, index, inited
+      //
+      // Pre Conditions: points != NULL
+      //
+      // Post Conditions: returns void. sets variables to defaul values for program
+      //
+      //                                                                  
+      //******************************************************************
 void Scene::UpdateScene()
 {
 	//Game isnt over
