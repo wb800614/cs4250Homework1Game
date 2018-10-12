@@ -40,7 +40,7 @@ void Dart::init_points()
     points[index]= vec2( 0,  0);
     GLfloat delta=(2.0*M_PI)/float(NumPoints-2);
     GLfloat angle=0.0;
-    for (size_t ind = 1; ind < NumPoints; ++ind) {
+    for (int ind = 1; ind < NumPoints; ++ind) {
       points[index+ind]=vec2(cos(angle), sin(angle));
       angle+=delta;
     }

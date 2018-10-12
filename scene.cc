@@ -66,9 +66,9 @@ Scene::~Scene()
 
 //******************************************************************
       //                                                                  
-      //  Function:   Object
+      //  Function:   SetWindowSize
       //                                                                  
-      //  Purpose:    default constructor to set variables to default                            
+      //  Purpose:    function to set passed in variable to the window size member variable. Update everything in scene to refelect this                           
       //                                                                  
       //  Parameters: none
       //                                                                  
@@ -76,7 +76,7 @@ Scene::~Scene()
       //
       // Pre Conditions: points != NULL
       //
-      // Post Conditions: returns void. sets variables to defaul values for program
+      // Post Conditions: returns void.
       //
       //                                                                  
       //******************************************************************
@@ -92,9 +92,9 @@ void Scene::SetWindowSize(vec2 window)
 
 //******************************************************************
       //                                                                  
-      //  Function:   Object
+      //  Function:   Set_Dose
       //                                                                  
-      //  Purpose:    default constructor to set variables to default                            
+      //  Purpose:    sets dose_selected to passed in variable                           
       //                                                                  
       //  Parameters: none
       //                                                                  
@@ -102,7 +102,7 @@ void Scene::SetWindowSize(vec2 window)
       //
       // Pre Conditions: points != NULL
       //
-      // Post Conditions: returns void. sets variables to defaul values for program
+      // Post Conditions: returns void. 
       //
       //                                                                  
       //******************************************************************
@@ -113,9 +113,9 @@ void Scene::Set_Dose(GLfloat d)
 
 //******************************************************************
       //                                                                  
-      //  Function:   Object
+      //  Function:   DrawBackground
       //                                                                  
-      //  Purpose:    default constructor to set variables to default                            
+      //  Purpose:    draws bckground color green like the ground                          
       //                                                                  
       //  Parameters: none
       //                                                                  
@@ -123,7 +123,7 @@ void Scene::Set_Dose(GLfloat d)
       //
       // Pre Conditions: points != NULL
       //
-      // Post Conditions: returns void. sets variables to defaul values for program
+      // Post Conditions: returns void. 
       //
       //                                                                  
       //******************************************************************
@@ -139,9 +139,9 @@ void Scene::DrawBackground()
 
 //******************************************************************
       //                                                                  
-      //  Function:   Object
+      //  Function:   InitBackground
       //                                                                  
-      //  Purpose:    default constructor to set variables to default                            
+      //  Purpose:    initializes points to draw backgroun                          
       //                                                                  
       //  Parameters: none
       //                                                                  
@@ -149,7 +149,7 @@ void Scene::DrawBackground()
       //
       // Pre Conditions: points != NULL
       //
-      // Post Conditions: returns void. sets variables to defaul values for program
+      // Post Conditions: returns void. 
       //
       //                                                                  
       //******************************************************************
@@ -164,9 +164,9 @@ void Scene::InitBackground()
 
 //******************************************************************
       //                                                                  
-      //  Function:   Object
+      //  Function:   GetNumberOfPointsRequired
       //                                                                  
-      //  Purpose:    default constructor to set variables to default                            
+      //  Purpose:    returns nuber of points required to draw scene                          
       //                                                                  
       //  Parameters: none
       //                                                                  
@@ -174,13 +174,14 @@ void Scene::InitBackground()
       //
       // Pre Conditions: points != NULL
       //
-      // Post Conditions: returns void. sets variables to defaul values for program
+      // Post Conditions: returns int
       //
       //                                                                  
       //******************************************************************
 int Scene::GetNumberOfPointsRequired()
 {
 	int returnval = 0;
+	//Get count of points required to draw animals
 	for(int i = 0; i < count_of_animals; i++)
   	{
 	    if (i % 2 == 0)
@@ -193,6 +194,7 @@ int Scene::GetNumberOfPointsRequired()
 				returnval += Animal::NumRabbitPoints;
 		}
   	}
+  	//Get number of points required to draw obstacles
   	for(int i = 0; i < count_of_obstacles; i++)
   	{
   		if (i % 2 == 0)
@@ -205,15 +207,16 @@ int Scene::GetNumberOfPointsRequired()
 				returnval += Obstacle::Num_Bush_Points;
 		}
   	}
+  	//Add points for darts, scene, and gun
   	returnval += (4 + 4 + 18);
   	return returnval;
 }
 
 //******************************************************************
       //                                                                  
-      //  Function:   Object
+      //  Function:   Init
       //                                                                  
-      //  Purpose:    default constructor to set variables to default                            
+      //  Purpose:    initializes all attribues for sceene                           
       //                                                                  
       //  Parameters: none
       //                                                                  
@@ -242,9 +245,9 @@ void Scene::Init(GLuint nindex, vec2 *npoints, GLint noffsetLoc, GLint nsizeLoc,
 
 //******************************************************************
       //                                                                  
-      //  Function:   Object
+      //  Function:   InitAnimals
       //                                                                  
-      //  Purpose:    default constructor to set variables to default                            
+      //  Purpose:    Initializes and created all the animals for thes scene                          
       //                                                                  
       //  Parameters: none
       //                                                                  
@@ -252,7 +255,7 @@ void Scene::Init(GLuint nindex, vec2 *npoints, GLint noffsetLoc, GLint nsizeLoc,
       //
       // Pre Conditions: points != NULL
       //
-      // Post Conditions: returns void. sets variables to defaul values for program
+      // Post Conditions: returns void
       //
       //                                                                  
       //******************************************************************
@@ -265,6 +268,7 @@ void Scene::InitAnimals()
 	    animals_1[i] = new Animal(index, points, offsetLoc, sizeLoc, colorLoc);
 	    animals_1[i]->set_window_size(window_size);
 
+	    //Draw a deer
 	    if (i % 2 == 0)
 	    {
 	    	animals_1[i]-> set_animal_type(Animal::DEER);
@@ -273,12 +277,14 @@ void Scene::InitAnimals()
 	    }
 		else 
 		{
+				//Draw a bear
 			if (i % 5 == 0)
 			{
 				animals_1[i]->set_animal_type(Animal::BEAR);
 				animals_1[i]->color(vec3(0.4, 0.1, 0.1));
 				index+=Animal::NumBearPoints;
 			}
+			//Draw a rabbit
 			else
 			{
 				animals_1[i]->set_animal_type(Animal::RABBIT);
@@ -295,9 +301,9 @@ void Scene::InitAnimals()
 
 //******************************************************************
       //                                                                  
-      //  Function:   Object
+      //  Function:   InitGun
       //                                                                  
-      //  Purpose:    default constructor to set variables to default                            
+      //  Purpose:    initializes gun on the scene                          
       //                                                                  
       //  Parameters: none
       //                                                                  
@@ -305,7 +311,7 @@ void Scene::InitAnimals()
       //
       // Pre Conditions: points != NULL
       //
-      // Post Conditions: returns void. sets variables to defaul values for program
+      // Post Conditions: returns void.
       //
       //                                                                  
       //******************************************************************
@@ -319,9 +325,9 @@ void Scene::InitGun()
 
 //******************************************************************
       //                                                                  
-      //  Function:   Object
+      //  Function:   InitDarts
       //                                                                  
-      //  Purpose:    default constructor to set variables to default                            
+      //  Purpose:    initialzies darts on the scene                           
       //                                                                  
       //  Parameters: none
       //                                                                  
@@ -329,7 +335,7 @@ void Scene::InitGun()
       //
       // Pre Conditions: points != NULL
       //
-      // Post Conditions: returns void. sets variables to defaul values for program
+      // Post Conditions: returns void.
       //
       //                                                                  
       //******************************************************************
@@ -347,9 +353,9 @@ void Scene::InitDarts()
 
 //******************************************************************
       //                                                                  
-      //  Function:   Object
+      //  Function:   InitObstacles
       //                                                                  
-      //  Purpose:    default constructor to set variables to default                            
+      //  Purpose:    initializes obstacles on the scene                           
       //                                                                  
       //  Parameters: none
       //                                                                  
@@ -372,6 +378,7 @@ void Scene::InitObstacles()
 		obstacles[i] = new Obstacle(index, points, offsetLoc, sizeLoc, colorLoc);
 		obstacles[i]->set_window_size(window_size);
 
+		//Draw grass
 		if (i % 2 == 0)
 		{
 			obstacles[i]->set_obstacle_type(Obstacle::GRASS);
@@ -379,11 +386,13 @@ void Scene::InitObstacles()
 		}
 		else
 		{
+			//Draw a treee
 			if (i % 5 == 0)
 			{
 				obstacles[i]->set_obstacle_type(Obstacle::TREE);
 				index+=Obstacle::Num_Tree_Points;
 			}
+			//Draw a bush
 			else 
 			{
 				obstacles[i]->set_obstacle_type(Obstacle::BUSH);
@@ -398,9 +407,9 @@ void Scene::InitObstacles()
 
 //******************************************************************
       //                                                                  
-      //  Function:   Object
+      //  Function:   UpdateGun
       //                                                                  
-      //  Purpose:    default constructor to set variables to default                            
+      //  Purpose:    update position of crosshairs for gun                         
       //                                                                  
       //  Parameters: none
       //                                                                  
@@ -419,17 +428,17 @@ void Scene::UpdateGun(GLint x, GLint y)
 
 //******************************************************************
       //                                                                  
-      //  Function:   Object
+      //  Function:   FireGun
       //                                                                  
-      //  Purpose:    default constructor to set variables to default                            
+      //  Purpose:    mouse click x and y passed in to create a shot placement for a dart                           
       //                                                                  
-      //  Parameters: none
+      //  Parameters: GLint x, GLint y
       //                                                                  
       // Member/Global Variables: points, index, inited
       //
       // Pre Conditions: points != NULL
       //
-      // Post Conditions: returns void. sets variables to defaul values for program
+      // Post Conditions: returns void. 
       //
       //                                                                  
       //******************************************************************
@@ -450,9 +459,9 @@ void Scene::FireGun(GLint x, GLint y)
 
 //******************************************************************
       //                                                                  
-      //  Function:   Object
+      //  Function:   Check_For_Tracker
       //                                                                  
-      //  Purpose:    default constructor to set variables to default                            
+      //  Purpose:    check to see if any of the recently shot darts should be tracking an animal                           
       //                                                                  
       //  Parameters: none
       //                                                                  
@@ -460,7 +469,7 @@ void Scene::FireGun(GLint x, GLint y)
       //
       // Pre Conditions: points != NULL
       //
-      // Post Conditions: returns void. sets variables to defaul values for program
+      // Post Conditions: returns void.
       //
       //                                                                  
       //******************************************************************
@@ -501,9 +510,9 @@ void Scene::Check_For_Tracker()
 
 //******************************************************************
       //                                                                  
-      //  Function:   Object
+      //  Function:   UpdateScene
       //                                                                  
-      //  Purpose:    default constructor to set variables to default                            
+      //  Purpose:    Updates all attributes within the scene                          
       //                                                                  
       //  Parameters: none
       //                                                                  
@@ -577,12 +586,14 @@ void Scene::UpdateScene()
 	    {
 	    	darts[i] -> update();
 	    }
-	    //glutSetWindowTitle("Selected Dart Dose : " + std::to_string(dose_selected) + "   /   Score : " + std::to_string(score) + "");
+	    std::string message = "Selected Dart Dose : " + std::to_string(dose_selected) + "   /   Score : " + std::to_string(score) + "   /   Darts left : " + std::to_string(count_of_darts-next_shot_index);
+	    glutSetWindowTitle(message.c_str());
 	}
 	//Game is over
 	else 
 	{
-		//glutSetWindowTitle("GAME OVER - Score : " + score);
+		std::string message = "GAME OVER - Score : " + std::to_string(score);
+		glutSetWindowTitle(message.c_str());
 	}
 }
 

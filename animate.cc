@@ -153,6 +153,10 @@ extern "C" void key(unsigned char k, int xx, int yy)
     std::cout << "Set dose size to 30" << std::endl;
     MyScene->Set_Dose(30);
     break;
+  case 'h':
+  case 'H':
+    std::cout << "GAME HELP: left mouse button to shoot dart. 1 to change dose to 10, 2 to change dose to 20, 3 to change dose to 30.\nRabbit dose = 10, deer dose = 20, bear dose = 30\nAnimal laying down red means animal has died. Animal laying down green means animal is sleeping.\n";
+    break;
   default:
     // Anything else.
     break;

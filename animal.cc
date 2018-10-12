@@ -410,7 +410,7 @@ void Animal::init_angry_bear_points()
   points[index]= vec2( 0,  0);
   GLfloat delta=(2.0*M_PI)/float(NumBearPoints-12);
   GLfloat angle=0.0;
-  for (size_t ind = 1; ind < NumBearPoints-10; ++ind) {
+  for (int ind = 1; ind < NumBearPoints-10; ++ind) {
     points[index+ind]=vec2(cos(angle), sin(angle));
     angle+=delta;
   }

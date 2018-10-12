@@ -113,7 +113,7 @@ protected:
 
   //Constants
   //Max timeout possible
-  GLint MAX_TIMEOUT = 10000; //10 seconds
+  GLint MAX_TIMEOUT = 3000; //3 seconds
   GLfloat DEATH_TIME = 2000; //2 seconds
 };
 
