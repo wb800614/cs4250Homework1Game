@@ -1,15 +1,39 @@
-//Class implementation of square object 
-// 
-// Written by Wesley Book
-// 
-
-// last-modified: Fri Oct  6 07:42:10 2017
+//******************************************************************* 
+//                                                                    
+//  Program:     Homework 1
+//                                                                     
+//  Author:      Wesley Book
+//  Email:       wb800614@ohio.edu
+//                                                                    
+//                                                                    
+//  Description: File to hold class definition for dart class
+//               left over.
+//                                                                    
+//  Date:        October 11, 2018
+//                                                                    
+//*******************************************************************
 
 #include "dart.h"
 
 GLint Dart::NumPoints=18;
 bool Dart::inited=false;
 
+//******************************************************************
+      //                                                                  
+      //  Function:   init_points
+      //                                                                  
+      //  Purpose:    Initialize points for a dart                                
+      //                                                                  
+      //  Parameters: none
+      //                                                                  
+      // Member/Global Variables: points, index, inited
+      //
+      // Pre Conditions: points != NULL
+      //
+      // Post Conditions: returns void. points array will hold new values to be stored as the points to make up a dart
+      //
+      //                                                                  
+      //******************************************************************
 void Dart::init_points()
 {
   if (!inited && points!=NULL) {
@@ -26,7 +50,22 @@ void Dart::init_points()
   }
 }
 
-// Default constructor
+//******************************************************************
+      //                                                                  
+      //  Function:   Dart
+      //                                                                  
+      //  Purpose:    Constructor for darts                               
+      //                                                                  
+      //  Parameters: none
+      //                                                                  
+      // Member/Global Variables: isshot, trackeron
+      //
+      // Pre Conditions: points != NULL
+      //
+      // Post Conditions: returns void. initializes tracker off and not shot, then initializes points
+      //
+      //                                                                  
+      //******************************************************************
 Dart::Dart() : Object()
 {
   isShot = false;
@@ -34,7 +73,22 @@ Dart::Dart() : Object()
   init_points();
 }
 
-// Constructor if start of square vertices aren't at 0.
+//******************************************************************
+      //                                                                  
+      //  Function:   Dart
+      //                                                                  
+      //  Purpose:    constructor for dart                               
+      //                                                                  
+      //  Parameters: GLuint nindex, vec2 *npoints, GLint noffsetLoc, GLint nsizeLoc, GLint ncolorLoc
+      //                                                                  
+      // Member/Global Variables: points, index, inited
+      //
+      // Pre Conditions: points != NULL
+      //
+      // Post Conditions: returns void. initializes all member variables to help draw dart
+      //
+      //                                                                  
+      //******************************************************************
 Dart::Dart(GLuint nindex, vec2 *npoints, GLint noffsetLoc, GLint nsizeLoc, GLint ncolorLoc): Object()
 {
   //Dart has not been shot yet
@@ -57,8 +111,23 @@ Dart::Dart(GLuint nindex, vec2 *npoints, GLint noffsetLoc, GLint nsizeLoc, GLint
   init_points();
 }
 
-// Code to call to draw a square.
-void Dart::draw(bool select_mode)
+//******************************************************************
+      //                                                                  
+      //  Function:   draw
+      //                                                                  
+      //  Purpose:    draws dart                              
+      //                                                                  
+      //  Parameters: s
+      //                                                                  
+      // Member/Global Variables: points, index, inited
+      //
+      // Pre Conditions: points != NULL
+      //
+      // Post Conditions: returns void. gets dart ready to be viewed once buffer is switched
+      //
+      //                                                                  
+      //******************************************************************
+void Dart::draw()
 {
   // Pass the current size of the circle
   glUniform1f(sizeLoc, size);
@@ -68,20 +137,65 @@ void Dart::draw(bool select_mode)
   glDrawArrays(GL_TRIANGLE_FAN, index, NumPoints);
 }
 
-//Set isShot to true
+//******************************************************************
+      //                                                                  
+      //  Function:   Fire_Dart
+      //                                                                  
+      //  Purpose:    set isshot flag to true                              
+      //                                                                  
+      //  Parameters: none
+      //                                                                  
+      // Member/Global Variables: isShot
+      //
+      // Pre Conditions: points != NULL
+      //
+      // Post Conditions: returns void. sets flag letting program know that dart has been shot
+      //
+      //                                                                  
+      //******************************************************************
 void Dart::Fire_Dart()
 {
   isShot = true;
 }
 
-//Set tracker on an object
+//******************************************************************
+      //                                                                  
+      //  Function:   Set_Tracker
+      //                                                                  
+      //  Purpose:    set dart tracer on animal                               
+      //                                                                  
+      //  Parameters: Animal * t (pointer to animal)
+      //                                                                  
+      // Member/Global Variables: target, trackeron
+      //
+      // Pre Conditions: points != NULL
+      //
+      // Post Conditions: returns void. sets tracker on target animal
+      //
+      //                                                                  
+      //******************************************************************
 void Dart::Set_Tracker(Animal * t)
 {
   TrackerOn = true;
   target = t;
 }
 
-// Update the position of the square from time
+//******************************************************************
+      //                                                                  
+      //  Function:   update
+      //                                                                  
+      //  Purpose:    Updates information for dart like size and location                             
+      //                                                                  
+      //  Parameters: none
+      //                                                                  
+      // Member/Global Variables: points, index, inited
+      //
+      // Pre Conditions: points != NULL
+      //
+      // Post Conditions: returns void. updates dart with new position and size
+      //
+      //                                                                  
+      //******************************************************************
 void Dart::update()
 {
   if (isShot)

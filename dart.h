@@ -1,19 +1,24 @@
+//******************************************************************* 
+//                                                                    
+//  Program:     Homework 1
+//                                                                     
+//  Author:      Wesley Book
+//  Email:       wb800614@ohio.edu
+//                                                                    
+//                                                                    
+//  Description: File to hold class declaration of dart class
+//                                                                    
+//  Date:        October 11, 2018
+//                                                                    
+//*******************************************************************
 #ifndef DART_H
 #define DART_H
-//Class definition of square object 
-// 
-// Written by Prof. David M. Chelberg
-// 
-// Assumes that the square object was defined in the VAO at location
-// index
-
-// last-modified: Fri Oct 25 15:22:05 2013
 
 #include <Angel.h>
 #include <iostream>
 #include <stdlib.h>
 #include "object.h"
-#include "square.h"
+#include "animal.h"
 
 class Dart :public Object
 {
@@ -38,15 +43,18 @@ public:
 
   // Code to call to draw a square.
   // If select is true, then use the selection color.
-  void draw(bool select=false);
+  void draw();
 
   // Update the position of the square from time
   void update();
   
 private:
+  //Whether points have been created to draw dart
   static bool inited;
+  //Whether dart has been shot
   bool isShot;
 
+  //Dart tracking bit and target animal
   bool TrackerOn;
   Animal * target;
 };

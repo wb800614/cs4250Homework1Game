@@ -1,15 +1,38 @@
-//Class implementation of square object 
-// 
-// Written by Wesley Book
-// 
-
-// last-modified: Fri Oct  6 07:42:10 2017
+//******************************************************************* 
+//                                                                    
+//  Program:     Homework 1
+//                                                                     
+//  Author:      Wesley Book
+//  Email:       wb800614@ohio.edu
+//                                                                    
+//                                                                    
+//  Description: File to hold class definition of gun class
+//                                                                    
+//  Date:        October 11, 2018
+//                                                                    
+//*******************************************************************
 
 #include "gun.h"
 
 GLint Gun::NumPoints=4;
 bool Gun::inited=false;
 
+//******************************************************************
+      //                                                                  
+      //  Function:   init_points
+      //                                                                  
+      //  Purpose:    Initialize points for the gun                                
+      //                                                                  
+      //  Parameters: none
+      //                                                                  
+      // Member/Global Variables: points, index, inited
+      //
+      // Pre Conditions: points != NULL
+      //
+      // Post Conditions: returns void. points array will hold new values to be stored as the points to make up a gun
+      //
+      //                                                                  
+      //******************************************************************
 void Gun::init_points()
 {
   if (!inited) {
@@ -18,19 +41,46 @@ void Gun::init_points()
     points[2+index]= vec2(-1*crosshair_size, 0);
     points[3+index]= vec2( crosshair_size, 0);
     inited=true;
-    // Actually send the data we've created to the GPU.
-    // Can't do this here as we aren't sure we have an open OpenGL window yet.
-    //    glBufferSubData(GL_ARRAY_BUFFER, index*sizeof(vec2), NumPoints*sizeof(vec2), points);
   }
 }
 
-// Default constructor
+//******************************************************************
+      //                                                                  
+      //  Function:   Gun
+      //                                                                  
+      //  Purpose:    Constructor                              
+      //                                                                  
+      //  Parameters: none
+      //                                                                  
+      // Member/Global Variables: points, index, inited
+      //
+      // Pre Conditions: points != NULL
+      //
+      // Post Conditions: returns void. calls function to initialize points
+      //
+      //                                                                  
+      //******************************************************************
 Gun::Gun() : Object()
 {
   init_points();
 }
 
-// Constructor if start of square vertices aren't at 0.
+//******************************************************************
+      //                                                                  
+      //  Function:   Gun
+      //                                                                  
+      //  Purpose:    Constructor to set up information to draw gun                               
+      //                                                                  
+      //  Parameters: GLuint nindex, vec2 *npoints, GLint noffsetLoc, GLint nsizeLoc, GLint ncolorLoc
+      //                                                                  
+      // Member/Global Variables: points, index, inited
+      //
+      // Pre Conditions: points != NULL
+      //
+      // Post Conditions: returns void. sets all member variables to help draw gun
+      //
+      //                                                                  
+      //******************************************************************
 Gun::Gun(GLuint nindex, vec2 *npoints, GLint noffsetLoc, GLint nsizeLoc, GLint ncolorLoc): Object()
 {
   // Default index is the start (0).
@@ -47,15 +97,45 @@ Gun::Gun(GLuint nindex, vec2 *npoints, GLint noffsetLoc, GLint nsizeLoc, GLint n
   init_points();
 }
 
-// Code to call to draw a square.
-void Gun::draw(bool select_mode)
+//******************************************************************
+      //                                                                  
+      //  Function:   draw
+      //                                                                  
+      //  Purpose:    draw gun                             
+      //                                                                  
+      //  Parameters: none
+      //                                                                  
+      // Member/Global Variables: points, index, inited
+      //
+      // Pre Conditions: points != NULL
+      //
+      // Post Conditions: returns void. gets gun ready to be viewed on next swap of buffers
+      //
+      //                                                                  
+      //******************************************************************
+void Gun::draw()
 {
   glUniform2i(offsetLoc, int(x), int(y));
   glUniform4f(colorLoc, 0.0, 0.0, 0.0, 1.0);
   glDrawArrays(GL_LINES, index, NumPoints);
 }
 
-// Update the position of the square from time
+//******************************************************************
+      //                                                                  
+      //  Function:   update
+      //                                                                  
+      //  Purpose:    Calls setlastupdatecalltime                               
+      //                                                                  
+      //  Parameters: none
+      //                                                                  
+      // Member/Global Variables: none
+      //
+      // Pre Conditions: points != NULL
+      //
+      // Post Conditions: returns void. calls function to set the last time the upate function is called
+      //
+      //                                                                  
+      //******************************************************************
 void Gun::update()
 {
   set_last_update_call_time();

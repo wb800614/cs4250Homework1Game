@@ -1,23 +1,21 @@
-// animate.cc
-// This program demonstrates different animation techniques.
-//
-// It also demonstrates how to determine which on-screen object
-// you have clicked on (i.e. selection) using the drawing with colors
-// to another buffer technique.
-//
-// Written by Prof. David M. Chelberg
-//
-// Modified to allow byte values (raw pixel data) to be read back from
-// GPU allowing 2^24 values to be used for selection with A channel
-// added could get to 2^32 (4 billion values).
-// 
-// last-modified: Fri Oct  6 07:41:04 2017
-//
+//******************************************************************* 
+//                                                                    
+//  Program:     Homework 1
+//                                                                     
+//  Author:      Wesley Book
+//  Email:       wb800614@ohio.edu
+//                                                                    
+//                                                                    
+//  Description: File to hold main function with helper functions for opengl
+//                                                                    
+//  Date:        October 11, 2018
+//                                                                    
+//*******************************************************************
 
 #include <Angel.h>
 #include <iostream>
 #include <stdlib.h>
-#include "square.h"
+#include "animal.h"
 #include "scene.h"
 
 using std::cin;
@@ -47,11 +45,6 @@ GLint windowSizeLoc;
 int win_h=0;
 int win_w=0;
 
-// Initial parameters of the ellipses
-GLfloat angular_offset=3.14;
-GLfloat angular_velocity=1.0/230.0;
-GLfloat minor_axis=100.0;
-GLfloat major_axis=150.0;
 
 // Simple display draws a square of size sq_size*2 around mouse
 // location.
@@ -75,6 +68,11 @@ extern "C" void display()
     MyScene->darts[i]->draw();
   }
 
+  for(int i = 0; i < MyScene->count_of_obstacles; i++)
+  {
+    MyScene->obstacles[i]->draw();
+  }
+
   glutSwapBuffers ();
 }
 
@@ -91,11 +89,6 @@ extern "C" void idle()
 
     glutPostRedisplay();
   }
-}
-
-void processSelection(unsigned char PixelColor[], int btn)
-{
-
 }
 
 // Mouse callback, implements selection by using colors in the back buffer.
@@ -115,14 +108,7 @@ extern "C" void mouse(int btn, int state, int x, int y)
     glClear(GL_COLOR_BUFFER_BIT);
     glutPostRedisplay();
   }
-}
-
-// Allows you to still get location of mouse clicks when using menus
-extern "C" void menustatus(int status, int x, int y)
-{
-
-  glutPostRedisplay();
-}  
+} 
 
 // Called whenever mouse moves, after being pressed
 extern "C" void motion(int x, int y)
@@ -142,47 +128,6 @@ extern "C" void myReshape(int w, int h)
   glUniform2f(windowSizeLoc, win_w, win_h);       // Pass the window size
 						  // size
   glutPostRedisplay();
-}
-
-// Example menu code.
-extern "C" void myMenu(int value)
-{
-  switch (value) {
-  case 1:
-    // Clear screen
-    glClear (GL_COLOR_BUFFER_BIT);
-    break;
-  case 2:
-    // Set clear color to red
-    glClearColor (1.0, 0.0, 0.0, 1.0);
-    break;
-  case 3:
-    // Set clear color to black
-    glClearColor (0.0, 0.0, 0.0, 1.0);
-    break;
-  default:
-    break;
-  }
-  glutPostRedisplay(); 
-}
-
-
-// Create menu and items.
-// %%%
-// %%% What happens if we change the menu's numbering scheme?
-// %%%
-void setupMenu()
-{
-  glutCreateMenu(myMenu);
-  glutAddMenuEntry("clear screen", 1);
-  glutAddMenuEntry("red background", 2);
-  glutAddMenuEntry("black background", 3);
-  /*  glutAddMenuEntry("The Answer", 42);
-  glutAddMenuEntry("clear screen", 32);
-  glutAddMenuEntry("red background", 22);
-  glutAddMenuEntry("black background", 12);*/
-
-  glutAttachMenu(GLUT_RIGHT_BUTTON);
 }
 
 // Keypress events.
@@ -208,34 +153,11 @@ extern "C" void key(unsigned char k, int xx, int yy)
     std::cout << "Set dose size to 30" << std::endl;
     MyScene->Set_Dose(30);
     break;
-  case ' ':
-      
-    break;
   default:
     // Anything else.
     break;
   }
   // Something might have changed requiring redisplay
-  glutPostRedisplay();
-}
-
-// Special Keys events.
-// This one only responds to the up arrow key.
-extern "C" void special(int k, int xx, int yy)
-{
-  switch (k) {
-  case GLUT_KEY_UP:
-    break;
-  case GLUT_KEY_DOWN:
-    break;
-  case GLUT_KEY_LEFT:
-    break;
-  case GLUT_KEY_RIGHT:
-    break;
-  default:
-    // do nothing
-    break;
-  }
   glutPostRedisplay();
 }
 
@@ -252,10 +174,6 @@ void myinit()
 
   // Color initializations
   glClearColor(0.0, 0.0, 0.0, 1.0);
-  
-  // Can you do this?  Attach a menu to a button already
-  // used for something else?  
-  setupMenu();
 
   // Callbacks
   glutDisplayFunc(display); 
@@ -263,13 +181,7 @@ void myinit()
   glutReshapeFunc (myReshape);
   glutMouseFunc (mouse);
   glutKeyboardFunc(key);
-  glutSpecialFunc(special);
   glutPassiveMotionFunc (motion);
-
-  // NOTE: This is not in book. The following sets up a callback
-  // whenever a menu is in use.  It gives mouse click location as well
-  // as the status of the use of the menu.
-  glutMenuStatusFunc(menustatus);
 }
 
 // This function initializes the buffers and shaders

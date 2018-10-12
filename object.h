@@ -1,13 +1,19 @@
+//******************************************************************* 
+//                                                                    
+//  Program:     Homework 1
+//                                                                     
+//  Author:      Wesley Book
+//  Email:       wb800614@ohio.edu
+//                                                                    
+//                                                                    
+//  Description: File to hold class declaration of object class
+//                                                                    
+//  Date:        October 11, 2018
+//                                                                    
+//*******************************************************************
 #ifndef OBJECT_H
 #define OBJECT_H
-//Class definition of object object 
-// 
-// Written by Prof. David M. Chelberg
-// 
-// Object base class
-//   implements common functions to all objects that will be drawn/animated
 
-// last-modified: Fri Oct  6 07:41:54 2017
 
 #include <Angel.h>
 #include <iostream>
@@ -31,15 +37,6 @@ class Object
 
   // Get the object's color as a vec3
   vec3 getColor();
-
-  // Change the object's select color to r, g, b value
-  void selectColor(GLfloat nr, GLfloat ng, GLfloat nb);
-
-  // Change the object's select color to ncolor's value
-  void selectColor(vec3 ncolor);
-
-  // Get the object's select color as a vec3
-  vec3 getSelectColor();
 
   // Change the size of the object.
   void change_size(GLfloat size = -1);
@@ -93,11 +90,6 @@ protected:
   GLfloat g;
   GLfloat b;
 
-  // Color for selection drawing of object
-  GLfloat sr;
-  GLfloat sg;
-  GLfloat sb;
-
   // Start of vertices to draw in VAO
   GLuint index;
   // Pointer to the points array
@@ -124,9 +116,5 @@ protected:
   GLint MAX_TIMEOUT = 10000; //10 seconds
   GLfloat DEATH_TIME = 2000; //2 seconds
 };
-
-// Comparator for unsigned vs. float colors
-// Returns true if they are the same color.
-bool cmpcolor(unsigned char colora[], vec3 colorb);
 
 #endif

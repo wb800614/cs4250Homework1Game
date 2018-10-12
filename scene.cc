@@ -1,3 +1,16 @@
+//******************************************************************* 
+//                                                                    
+//  Program:     Homework 1
+//                                                                     
+//  Author:      Wesley Book
+//  Email:       wb800614@ohio.edu
+//                                                                    
+//                                                                    
+//  Description: File to hold class definition for scene class
+//                                                                    
+//  Date:        October 11, 2018
+//                                                                    
+//*******************************************************************
 #include "scene.h"
 
 Scene::Scene(vec2 window)
@@ -15,6 +28,8 @@ Scene::~Scene()
 		delete animals_1[i];
 	for(int i = 0; i < count_of_darts; i++)
 		delete darts[i];
+	for(int i = 0; i < count_of_obstacles; i++)
+		delete obstacles[i];
 }
 
 void Scene::SetWindowSize(vec2 window)
@@ -35,14 +50,9 @@ void Scene::Set_Dose(GLfloat d)
 void Scene::DrawBackground()
 {
 	//Drawing ground
-	glUniform1f(sizeLoc, window_size.x/2);
+	glUniform1f(sizeLoc, window_size.x*2);
   	glUniform2i(offsetLoc, int(window_size.x/2), int(window_size.y/2));
     glUniform4f(colorLoc, 0.0, 0.4, 0.0, 1.0);
-	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-	//Drawing sky
-	glUniform1f(sizeLoc, window_size.x/2);
-  	glUniform2i(offsetLoc, int(window_size.x/2), int(window_size.y*3/2.5));
-    glUniform4f(colorLoc, 0.0, 0.0, 0.8, 1.0);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 	
 }
@@ -71,6 +81,18 @@ int Scene::GetNumberOfPointsRequired()
 				returnval += Animal::NumRabbitPoints;
 		}
   	}
+  	for(int i = 0; i < count_of_obstacles; i++)
+  	{
+  		if (i % 2 == 0)
+			returnval += Obstacle::Num_Grass_Points;
+		else
+		{
+			if (i % 5 == 0)
+				returnval += Obstacle::Num_Tree_Points;
+			else 
+				returnval += Obstacle::Num_Bush_Points;
+		}
+  	}
   	returnval += (4 + 4 + 18);
   	return returnval;
 }
@@ -85,6 +107,7 @@ void Scene::Init(GLuint nindex, vec2 *npoints, GLint noffsetLoc, GLint nsizeLoc,
 
 	InitBackground();
 	InitAnimals();
+	InitObstacles();
 	InitGun();
 	InitDarts();
 }
@@ -122,7 +145,7 @@ void Scene::InitAnimals()
 	    animals_1[i]->move(-1,y);
 	    animals_1[i]->change_size();
 	    animals_1[i]->set_random_timeout();
-	    animals_1[i]->set_ground(vec2(window_size.x, window_size.y/2.0));
+	    animals_1[i]->set_ground(vec2(window_size.x, window_size.y));
   	}
 }
 
@@ -140,10 +163,45 @@ void Scene::InitDarts()
 	{
 		darts[i] = new Dart(index, points, offsetLoc, sizeLoc, colorLoc);
 		darts[i]->set_window_size(window_size);
-		darts[i]->set_ground(vec2(window_size.x, window_size.y/2.0));
+		darts[i]->set_ground(vec2(window_size.x, window_size.y));
 		darts[i]->move(window_size.x*2, window_size.y*2);
 	}
 	index+=18;
+}
+
+void Scene::InitObstacles()
+{
+	srand(time(NULL));
+	for(int i = 0; i < count_of_obstacles; i++)
+	{
+		GLfloat y = rand()%((int)window_size.y/2 + 1);
+		GLfloat x = rand()%((int)window_size.x + 1);
+
+		obstacles[i] = new Obstacle(index, points, offsetLoc, sizeLoc, colorLoc);
+		obstacles[i]->set_window_size(window_size);
+
+		if (i % 2 == 0)
+		{
+			obstacles[i]->set_obstacle_type(Obstacle::GRASS);
+			index+=Obstacle::Num_Grass_Points;
+		}
+		else
+		{
+			if (i % 5 == 0)
+			{
+				obstacles[i]->set_obstacle_type(Obstacle::TREE);
+				index+=Obstacle::Num_Tree_Points;
+			}
+			else 
+			{
+				obstacles[i]->set_obstacle_type(Obstacle::BUSH);
+				index+=Obstacle::Num_Bush_Points;
+			}
+		}
+		obstacles[i]->move(x,y);
+	    obstacles[i]->change_size();
+	    obstacles[i]->set_ground(vec2(window_size.x, window_size.y));
+	}
 }
 
 void Scene::UpdateGun(GLint x, GLint y)
@@ -169,16 +227,34 @@ void Scene::FireGun(GLint x, GLint y)
 void Scene::Check_For_Tracker()
 {
 	vec2 fire_pos = darts[next_shot_index]->get_pos();
+
 	for(int i = 0; i < count_of_animals; i++)
 	{
 		GLfloat s = animals_1[i]->get_size();
+		bool obstacle_hit = false;
 		vec2 Animal_pos = animals_1[i]->get_pos();
+		vec2 obstacle_hit_pos;
+
+		for(int i = 0; i < count_of_obstacles; i++)
+		{
+			vec2 obstacle_pos = obstacles[i]->get_pos();
+			GLfloat obstacle_size = obstacles[i]->get_size();
+
+			if (fire_pos.x >= obstacle_pos.x-obstacle_size && fire_pos.x <= obstacle_pos.x+obstacle_size
+			&& fire_pos.y >= obstacle_pos.y- obstacle_size && fire_pos.y <= obstacle_pos.y+obstacle_size)
+			{
+				obstacle_hit = true;
+				obstacle_hit_pos = obstacle_pos;
+				break;
+			}
+		}
 
 		//Check if dart was fired at animal in view
-		if (fire_pos.x >= Animal_pos.x-s/2 && fire_pos.x <= Animal_pos.x+s/2
-			&& fire_pos.y >= Animal_pos.y-s/2 && fire_pos.y <= Animal_pos.y+s/2)
+		if (fire_pos.x >= Animal_pos.x-s && fire_pos.x <= Animal_pos.x+s
+			&& fire_pos.y >= Animal_pos.y-s && fire_pos.y <= Animal_pos.y+s)
 		{
-			darts[next_shot_index]->Set_Tracker(animals_1[i]);
+			if (!obstacle_hit || (obstacle_hit && Animal_pos.y > obstacle_hit_pos.y))
+				darts[next_shot_index]->Set_Tracker(animals_1[i]);
 		}
 	}
 }
@@ -194,60 +270,63 @@ void Scene::UpdateScene()
 	    	{
 	    		isGameOver = true;
 	    	}
-			animals_1[i] -> update();
-			if (animals_1[i]->is_laying_down())
-			{
-				if (animals_1[i]->body_size == 10)
+	    	if (!animals_1[i]->is_done())
+	    	{
+	    		if (animals_1[i]->is_laying_down())
 				{
-					//Animal dies
-					if (dose_selected > 10)
+					if (animals_1[i]->body_size == 10)
 					{
-						animals_1[i]->animal_die();
-						score -= 10;
+						//Animal dies
+						if (dose_selected > 10)
+						{
+							animals_1[i]->animal_die();
+							score -= 10;
+						}
+						else
+						{
+							animals_1[i]->animal_sleep();
+							score += 10;
+						}
 					}
-					else
+					else if (animals_1[i]->body_size == 20)
 					{
-						animals_1[i]->animal_sleep();
-						score += 10;
+						if (dose_selected > 20)
+						{
+							animals_1[i]->animal_die();
+							score -= 20;
+						}
+						else if (dose_selected < 20)
+							animals_1[i]->animal_wake();
+						else
+						{
+							animals_1[i]->animal_sleep();
+							score += 20;
+						}
 					}
-				}
-				else if (animals_1[i]->body_size == 20)
-				{
-					if (dose_selected > 20)
+					else if (animals_1[i]->body_size == 30)
 					{
-						animals_1[i]->animal_die();
-						score -= 20;
+						if (dose_selected < 30)
+							animals_1[i]->animal_angry();
+						else
+						{
+							animals_1[i]->animal_sleep();
+							score += 30;
+						}
 					}
-					else if (dose_selected < 20)
-						animals_1[i]->animal_wake();
-					else
-					{
-						animals_1[i]->animal_sleep();
-						score += 20;
-					}
-				}
-				else if (animals_1[i]->body_size == 30)
-				{
-					if (dose_selected < 30)
-						animals_1[i]->animal_angry();
-					else
-					{
-						animals_1[i]->animal_sleep();
-						score += 30;
-					}
-				}
-	      }
+		      	}
+		      	animals_1[i] -> update();
+	    	}
 	    }
 	    for(int i = 0; i < count_of_darts; i++)
 	    {
 	    	darts[i] -> update();
 	    }
-	    glutSetWindowTitle("Selected Dart Dose : " + std::to_string(dose_selected) + "   /   Score : " + std::to_string(score) + "");
+	    //glutSetWindowTitle("Selected Dart Dose : " + std::to_string(dose_selected) + "   /   Score : " + std::to_string(score) + "");
 	}
 	//Game is over
 	else 
 	{
-		glutSetWindowTitle("GAME OVER - Score : " + score);
+		//glutSetWindowTitle("GAME OVER - Score : " + score);
 	}
 }
 

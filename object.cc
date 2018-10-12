@@ -1,12 +1,35 @@
-//Class implementation of base object class
-// 
-// Written by Prof. David M. Chelberg
-// 
-
-// last-modified: Fri Oct 25 15:21:44 2013
+//******************************************************************* 
+//                                                                    
+//  Program:     Homework 1
+//                                                                     
+//  Author:      Wesley Book
+//  Email:       wb800614@ohio.edu
+//                                                                    
+//                                                                    
+//  Description: File to hold class definition for object class
+//                                                                    
+//  Date:        October 11, 2018
+//                                                                    
+//*******************************************************************
 
 #include "object.h"
 
+//******************************************************************
+      //                                                                  
+      //  Function:   Object
+      //                                                                  
+      //  Purpose:    default constructor to set variables to default                            
+      //                                                                  
+      //  Parameters: none
+      //                                                                  
+      // Member/Global Variables: points, index, inited
+      //
+      // Pre Conditions: points != NULL
+      //
+      // Post Conditions: returns void. sets variables to defaul values for program
+      //
+      //                                                                  
+      //******************************************************************
 Object::Object()
 {
   // Default index is the start (0).
@@ -17,9 +40,6 @@ Object::Object()
 
   // Default color = white.
   r=g=b=1.0;
-
-  // Default selection color = black.
-  sr=sg=sb=0.0;
 
   // Default position is (0, 0)
   x=y=0.0;
@@ -34,7 +54,22 @@ Object::Object()
   isVisible = false;
 }
 
-// Move the object to (x, y) in screen coordinates
+//******************************************************************
+      //                                                                  
+      //  Function:   move
+      //                                                                  
+      //  Purpose:    moves object ot nx,ny                            
+      //                                                                  
+      //  Parameters: none
+      //                                                                  
+      // Member/Global Variables: points, index, inited
+      //
+      // Pre Conditions: points != NULL
+      //
+      // Post Conditions: returns void.
+      //
+      //                                                                  
+      //******************************************************************
 void Object::move(GLfloat nx, GLfloat ny)
 {
   if (nx == -1)
@@ -44,13 +79,43 @@ void Object::move(GLfloat nx, GLfloat ny)
   y = ny;
 }
 
-// Get the current object's position
+//******************************************************************
+      //                                                                  
+      //  Function:   get_pos
+      //                                                                  
+      //  Purpose:    return location of object on screen
+      //                                                                  
+      //  Parameters: none
+      //                                                                  
+      // Member/Global Variables: x,y
+      //
+      // Pre Conditions: points != NULL
+      //
+      // Post Conditions: returns void. 
+      //
+      //                                                                  
+      //******************************************************************
 vec2 Object::get_pos()
 {
   return(vec2(x, y));
 }
 
-// Change the size of the object.
+//******************************************************************
+      //                                                                  
+      //  Function:   change_size
+      //                                                                  
+      //  Purpose:    changes size of object based on value passed in                           
+      //                                                                  
+      //  Parameters: GLfloat nsize
+      //                                                                  
+      // Member/Global Variables: size
+      //
+      // Pre Conditions: points != NULL
+      //
+      // Post Conditions: returns void. 
+      //
+      //                                                                  
+      //******************************************************************
 void Object::change_size(GLfloat nsize)
 {
   if (nsize == -1)
@@ -59,43 +124,149 @@ void Object::change_size(GLfloat nsize)
     size = nsize;
 }
 
-//Set current window size
+//******************************************************************
+      //                                                                  
+      //  Function:   set_window_size
+      //                                                                  
+      //  Purpose:    set the window size to vector passed in                            
+      //                                                                  
+      //  Parameters: vec2 window
+      //                                                                  
+      // Member/Global Variables: window_size
+      //
+      // Pre Conditions: points != NULL
+      //
+      // Post Conditions: returns void. 
+      //
+      //                                                                  
+      //******************************************************************
 void Object::set_window_size(vec2 window)
 {
   window_size = window;
 }
 
-// Update the last time object was modified to now.
+//******************************************************************
+      //                                                                  
+      //  Function:   set_last_time
+      //                                                                  
+      //  Purpose:    set last_time to the last time glutget was called                             
+      //                                                                  
+      //  Parameters: none
+      //                                                                  
+      // Member/Global Variables: last_time
+      //
+      // Pre Conditions: points != NULL
+      //
+      // Post Conditions: returns void. gets gun ready to be viewed on next swap of buffers
+      //
+      //                                                                  
+      //******************************************************************
 void Object::set_last_time()
 {
   // When did we last update object
   last_time=glutGet(GLUT_ELAPSED_TIME);
 }
 
-// Returns the amount of time since we last updated the object.
+//******************************************************************
+      //                                                                  
+      //  Function:   compute_time
+      //                                                                  
+      //  Purpose:    computes the current time to last time                          
+      //                                                                  
+      //  Parameters: none
+      //                                                                  
+      // Member/Global Variables: last_time
+      //
+      // Pre Conditions: points != NULL
+      //
+      // Post Conditions: returns glint holding the elapased time
+      //
+      //                                                                  
+      //******************************************************************
 GLint Object::compute_time()
 {
   return(glutGet(GLUT_ELAPSED_TIME)-last_time);
 }
 
-// Returns the amount of time since we last updated the object.
+//******************************************************************
+      //                                                                  
+      //  Function:   compute_last_update_call_time
+      //                                                                  
+      //  Purpose:    returns the current time minus the last_update_call_time                           
+      //                                                                  
+      //  Parameters: none
+      //                                                                  
+      // Member/Global Variables: last_update_call_time
+      //
+      // Pre Conditions: points != NULL
+      //
+      // Post Conditions: returns GLint
+      //
+      //                                                                  
+      //******************************************************************
 GLint Object::compute_last_update_call_time()
 {
   return(glutGet(GLUT_ELAPSED_TIME)-last_update_call_time);
 }
 
+//******************************************************************
+      //                                                                  
+      //  Function:   set_last_update_call_time
+      //                                                                  
+      //  Purpose:    sets the last update call time                          
+      //                                                                  
+      //  Parameters: none
+      //                                                                  
+      // Member/Global Variables: last_update_call_time
+      //
+      // Pre Conditions: points != NULL
+      //
+      // Post Conditions: returns void.
+      //
+      //                                                                  
+      //******************************************************************
 void Object::set_last_update_call_time()
 {
   last_update_call_time = glutGet(GLUT_ELAPSED_TIME);
 }
 
-// Change the object's color to r, g, b value
+//******************************************************************
+      //                                                                  
+      //  Function:   color
+      //                                                                  
+      //  Purpose:    sets color of objec based on values passed in                            
+      //                                                                  
+      //  Parameters: GLfloat nr, GLfloat ng, GLfloat nb
+      //                                                                  
+      // Member/Global Variables: points, index, inited
+      //
+      // Pre Conditions: points != NULL
+      //
+      // Post Conditions: returns void
+      //
+      //                                                                  
+      //******************************************************************
 void Object::color(GLfloat nr, GLfloat ng, GLfloat nb)
 {
   r = nr; g = ng; b = nb;
 }  
 
-// Change the object's color to ncolor's value
+//******************************************************************
+      //                                                                  
+      //  Function:   color
+      //                                                                  
+      //  Purpose:    sets color of object based on values passed in                            
+      //                                                                  
+      //  Parameters: vec3 ncolor
+      //                                                                  
+      // Member/Global Variables: r,g,b
+      //
+      // Pre Conditions: points != NULL
+      //
+      // Post Conditions: returns void.
+      //
+      //                                                                  
+      //******************************************************************
 void Object::color(vec3 ncolor)
 {
   r = ncolor.x;
@@ -103,52 +274,86 @@ void Object::color(vec3 ncolor)
   b = ncolor.z;
 }
 
-// Get the object's color as a vec3
+//******************************************************************
+      //                                                                  
+      //  Function:   getColor
+      //                                                                  
+      //  Purpose:    return color                            
+      //                                                                  
+      //  Parameters: none
+      //                                                                  
+      // Member/Global Variables: r,g,b
+      //
+      // Pre Conditions: points != NULL
+      //
+      // Post Conditions: returns vec3 holding rg,b
+      //
+      //                                                                  
+      //******************************************************************
 vec3 Object::getColor()
 {
   return(vec3(r, g, b));
 }
 
-// Get the object's size
+//******************************************************************
+      //                                                                  
+      //  Function:   get_size
+      //                                                                  
+      //  Purpose:    returns the size of the object                           
+      //                                                                  
+      //  Parameters: none
+      //                                                                  
+      // Member/Global Variables: size
+      //
+      // Pre Conditions: points != NULL
+      //
+      // Post Conditions: returns GLfloat
+      //
+      //                                                                  
+      //******************************************************************
 GLfloat Object::get_size()
 {
   return size;
 }
 
-// Change the object's color to r, g, b value
-void Object::selectColor(GLfloat nr, GLfloat ng, GLfloat nb)
-{
-  sr = nr; sg = ng; sb = nb;
-}  
-
-// Change the object's color to ncolor's value
-void Object::selectColor(vec3 ncolor)
-{
-  sr = ncolor.x;
-  sg = ncolor.y;
-  sb = ncolor.z;
-}
-
-// Get the object's color as a vec3
-vec3 Object::getSelectColor()
-{
-  return(vec3(sr, sg, sb));
-}
-
+//******************************************************************
+      //                                                                  
+      //  Function:   set_random_timeout
+      //                                                                  
+      //  Purpose:    gets a random timeout with domain 1 - MAX_TIMEOUT                            
+      //                                                                  
+      //  Parameters: none
+      //                                                                  
+      // Member/Global Variables: MAX_TIMEOUT
+      //
+      // Pre Conditions: points != NULL
+      //
+      // Post Conditions: returns void.
+      //
+      //                                                                  
+      //******************************************************************
 void Object::set_random_timeout()
 {
   timeout = rand()%((int)MAX_TIMEOUT + 1);
 }
 
-//Set ground size
+//******************************************************************
+      //                                                                  
+      //  Function:   set_ground
+      //                                                                  
+      //  Purpose:    sets ground variable based on value passed in                            
+      //                                                                  
+      //  Parameters: vec2 g
+      //                                                                  
+      // Member/Global Variables: ground
+      //
+      // Pre Conditions: points != NULL
+      //
+      // Post Conditions: returns void.
+      //
+      //                                                                  
+      //******************************************************************
 void Object::set_ground(vec2 g)
 {
   ground = g;
-}
-
-bool cmpcolor(unsigned char colora[], vec3 colorb)
-{
-  return((colora[0]==int(colorb.x*255+0.5)) &&
-	 (colora[1]==int(colorb.y*255+0.5)) &&
-	 (colora[2]==int(colorb.z*255+0.5)));
 }

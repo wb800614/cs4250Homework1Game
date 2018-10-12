@@ -1,17 +1,27 @@
+//******************************************************************* 
+//                                                                    
+//  Program:     Homework 1
+//                                                                     
+//  Author:      Wesley Book
+//  Email:       wb800614@ohio.edu
+//                                                                    
+//                                                                    
+//  Description: File to hold class declaration of scene class
+//                                                                    
+//  Date:        October 11, 2018
+//                                                                    
+//*******************************************************************
 #ifndef SCENE_H
 #define SCENE_H
-//Class definition of scene
-// 
-// Written by Wesley Book
-// 
 
 #include <Angel.h>
 #include <iostream>
 #include <stdlib.h>
 #include <string>
-#include "square.h"
+#include "animal.h"
 #include "gun.h"
 #include "dart.h"
+#include "obstacle.h"
 
 class Scene 
 {
@@ -29,12 +39,14 @@ class Scene
 		int score;
 
 	public:
-		static const int count_of_animals = 6;
-		static const int count_of_darts=10;
+		static const int count_of_animals = 11;
+		static const int count_of_darts=15;
+		static const int count_of_obstacles = 11;
 		int next_shot_index;
 		Gun * gun;
 		Animal * animals_1[count_of_animals];
 		Dart * darts[count_of_darts];
+		Obstacle * obstacles[count_of_obstacles];
 
 		//Setup functions
 		Scene();
@@ -49,6 +61,7 @@ class Scene
 		void InitAnimals();
 		void InitGun();
 		void InitDarts();
+		void InitObstacles();
 		void UpdateScene();
 		int GetNumberOfPointsRequired();
 
